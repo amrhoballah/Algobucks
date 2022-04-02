@@ -14,13 +14,12 @@ import { DoctorService } from 'src/admin/services/doctor.service';
 export class AddComponent implements OnInit {
   model: any = {
     docID: '',
-    fName: 'test_name',
-    lName: 'test_name',
-    Doj: '',
+    firstName: 'test_name',
+    lastName: 'test_name',
     emailID: 'test_name@mail.com',
     phone: '123456789',
     city: 'city',
-    state: 'state',
+    country: 'state',
     speciality: 'speciality',
     imageHash: '',
   };

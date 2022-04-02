@@ -1,37 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.4.21;
 
-// import './Roles.sol';
-
-// using Roles for Roles.Role;
-
 contract Contract{
 
     struct Role {
         mapping (address => bool) bearer;
-        /**
-     * @dev Give an account access to this role.
-     */
-
     }
-
+    //Add a role to an account
     function add(Role storage role, address account) internal {
         require(!has(role, account), "Roles: account already has role");
         role.bearer[account] = true;
     }
-
-    /**
-     * @dev Remove an account's access to this role.
-     */
+    //Remove a role from an account
     function remove(Role storage role, address account) internal {
         require(has(role, account), "Roles: account does not have role");
         role.bearer[account] = false;
     }
-
-    /**
-     * @dev Check if an account has this role.
-     * @return bool
-     */
+    //Check if an account has a role
     function has(Role storage role, address account) internal view returns (bool) {
         require(account != address(0), "Roles: account is the zero address");
         return role.bearer[account];
@@ -41,9 +26,28 @@ contract Contract{
     Role private doctor;
     Role private patient;
 
+     /*
+        Modifiers
+    */
+
+
+    modifier onlyAdmin(){
+        require(has(admin,msg.sender) == true, 'Only Admin Can Do That');
+        _;
+    }
+    modifier onlyDoctor(){
+        require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
+        _;
+    }
+    modifier onlyPatient(){
+        require(has(patient,msg.sender) == true, 'Only Admin Can Do That');
+        _;
+    }
+
     struct Doctor{
         string firstName;
         string lastName;
+
     }
 
     struct Patient{
@@ -51,17 +55,21 @@ contract Contract{
         string lastName;
     }
 
-    struct MedRec{
-        string RecordHash;
+    struct MedicalRecord{
+        address patientId;
+        string recordType;
+        uint timestamp;
+        string diagnosis;
+        string treatment;
     }
 
     mapping(address => Doctor) Doctors;
     mapping(address => Patient) Patients;
-    mapping(address => MedRec) Records;
+    mapping(address => MedicalRecord[]) Records;
 
     address[] public Dr_ids;
     address[] public Patient_ids;
-    string[] public RecordHashes;
+    MedicalRecord[] public MedicalRecords;
 
     address accountId;
     address admin_id;
@@ -200,7 +208,7 @@ contract Contract{
         Patient storage patInfo = Patients[pat_id];
         patInfo.firstName = firstName;
         patInfo.lastName = lastName;
-        Patient_ids.push(msg.sender);
+        Patient_ids.push(pat_id);
 
         add(patient,pat_id);
     }
@@ -212,36 +220,22 @@ contract Contract{
 
     */
 
-    function addMedRecord(string memory _recHash, address _pat_id) public{
-        require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
-
-        MedRec storage record = Records[_pat_id];
-        record.RecordHash = _recHash;
-        RecordHashes.push(_recHash);
+    function addMedicalRecord(MedicalRecord memory _record) external onlyDoctor{
+        //require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
+        _record.timestamp=block.timestamp;
+        Records[_record.patientId].push(_record);
+        // record.recordType = _record.recordType;
+        // record.diagnosis = _record.diagnosis;
+        // record.treatment = _record.treatment;
+        // record.timestamp = block.timestamp;
+        MedicalRecords.push(_record);
     }
 
-    function viewMedRec(address id)public view returns(string memory){
-        // if(RecordHashes.has(Records[]) != )
-        return (Records[id].RecordHash);
+    function viewMedicalRecord(address id)public view returns(MedicalRecord[] memory){
+        return (Records[id]);
     }
 
-    /*
-        Modifiers
-    */
-
-
-    modifier onlyAdmin(){
-        require(has(admin,msg.sender) == true, 'Only Admin Can Do That');
-        _;
-    }
-    modifier onlyDoctor(){
-        require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
-        _;
-    }
-    modifier onlyPatient(){
-        require(has(patient,msg.sender) == true, 'Only Admin Can Do That');
-        _;
-    }
+   
 
 }
 
