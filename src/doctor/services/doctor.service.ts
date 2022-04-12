@@ -3,7 +3,7 @@ import { rejects } from 'assert';
 import { resolve } from 'dns';
 import { Observable } from 'rxjs';
 import { BlockchainService } from 'src/services/blockchain.service';
-import { IpfsService } from 'src/services/ipfs.service';
+const EthCrypto = require('eth-crypto');
 
 @Injectable({
   providedIn: 'root',
@@ -26,13 +26,11 @@ export class DoctorService {
 
   constructor(
     private blockchainService: BlockchainService,
-    private ipfsService: IpfsService
   ) {
     this.web3 = blockchainService.getWeb3();
     this.contract = blockchainService.getContract();
     this.account = blockchainService.getAccount();
 
-    this.ipfs = ipfsService.getIPFS();
   }
 
   checkisDr() {

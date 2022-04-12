@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 
 const Contract = require('../../build/contracts/Contract.json');
+const EthCrypto = require('eth-crypto');
 
 declare let window: any;
 
