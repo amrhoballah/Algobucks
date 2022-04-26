@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >= 0.4.21;
+pragma solidity >= 0.8.11;
 
 contract Contract{
 
@@ -22,39 +22,112 @@ contract Contract{
         return role.bearer[account];
     }
 
-    Role private admin;
-    Role private doctor;
+    Role private centralAuthority;
+    Role private organisationAdmin;
+    Role private practitioner;
     Role private patient;
 
      /*
         Modifiers
     */
 
-
-    modifier onlyAdmin(){
-        require(has(admin,msg.sender) == true, 'Only Admin Can Do That');
+    modifier onlyCentralAuthority(){
+        require(has(centralAuthority,msg.sender) == true, 'Only Central Authority Can Do That');
         _;
     }
-    modifier onlyDoctor(){
-        require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
+    modifier onlyOrganisationAdmin(){
+        require(has(organisationAdmin,msg.sender) == true, 'Only Organisation Admin Can Do That');
+        _;
+    }
+    modifier onlyPractitioner(){
+        require(has(practitioner,msg.sender) == true, 'Only Practitioner Can Do That');
         _;
     }
     modifier onlyPatient(){
-        require(has(patient,msg.sender) == true, 'Only Admin Can Do That');
+        require(has(patient,msg.sender) == true, 'Only Patient Can Do That');
         _;
     }
-
-    struct Doctor{
-        string firstName;
-        string lastName;
-
+    
+    /*
+        General Information
+    */
+    struct HumanName{
+        string givenNames;
+        string surname;
     }
 
+    struct ContactPoint{
+        string phoneNumber;
+        string email;
+    }
+    
+    struct PhysicalAddress{
+        string use;
+        string street;
+        string city;
+        string state;
+        string postalCode;
+        string country;
+    }
+
+    struct Communication{
+        string[] languages;
+        string preferred;
+    }
+
+    enum Gender{ MALE, FEMALE, OTHER, UNKNOWN }
+
+    struct Organisation{
+        address id;
+        string name;
+        uint dateJoined;
+        PhysicalAddress organisationAddress;
+    }
+    /*
+        Practitioner
+    */
+    struct Practitioner{
+        address id;
+        HumanName name;
+        ContactPoint telecom;
+        PhysicalAddress homeAddress;
+        Gender gender;
+        uint birthDate;
+        Communication Communication;
+        address memberOrgaisation;
+    }
+    
+    /*
+        Patient
+    */
     struct Patient{
-        string firstName;
-        string lastName;
+        address id;
+        HumanName name;
+        ContactPoint telecom;       
+        Gender gender;
+        uint birthDate;
+        PhysicalAddress homeAddress; 
+        bool deceasedBoolean;
+        uint deceasedDateTime;
+        bool multipleBirthBoolean;
+        uint multipleBirthInteger;
+        Communication communication;     
+        address generalPractitioner;
+        address managingOrganisation;
+        bool exists;
     }
 
+    enum PatientContactRelationship {GUARDIAN, PARTNER, FRIEND, FAMILY, CAREGIVER}
+
+    struct Contact{
+        PatientContactRelationship relationship;
+        HumanName name;
+        ContactPoint telecom;
+        PhysicalAddress homeAddress;
+        Gender gender;
+    }
+
+    // Start of Medical Records
     struct MedicalRecord{
         address patientId;
         string recordType;
@@ -63,61 +136,92 @@ contract Contract{
         string treatment;
     }
 
-    mapping(address => Doctor) Doctors;
+    mapping(address => Organisation) Organisations;
+    mapping(address => Practitioner) Practitioners;
     mapping(address => Patient) Patients;
     mapping(address => MedicalRecord[]) Records;
 
-    address[] public Dr_ids;
-    address[] public Patient_ids;
+    address[] public OrganisationList;
+    address[] public PractitionerList;
+    address[] public PatientList;
     MedicalRecord[] public MedicalRecords;
 
     address accountId;
-    address admin_id;
+    address centralAuthorityID;
     address get_patient_id;
     address get_dr_id;
 
     constructor() {
-        admin_id = msg.sender;
-        add(admin,admin_id);
+        centralAuthorityID = msg.sender;
+        add(centralAuthority,centralAuthorityID);
     }
 
     //get Admin
 
-    function getAdmin() public view returns(address){
-        return admin_id;
+    function getCentralAuthority() external view returns(address){
+        return centralAuthorityID;
+    }
+  
+    function isCentralAuthority() external view returns(bool){
+        return has(centralAuthority,tx.origin);
     }
 
+    function addOrganisation(Organisation memory data) external onlyCentralAuthority{
+        require(has(centralAuthority,msg.sender) == true, "Only for Admins");
+
+        Organisation storage organisationData = Organisations[data.id];
+        organisationData.id = data.id;
+        organisationData.name = data.name;
+        organisationData.dateJoined = data.dateJoined;
+        organisationData.organisationAddress = data.organisationAddress;
+
+        OrganisationList.push(data.id);
+        add(organisationAdmin,data.id);
+    }
+
+    function getOrganisation(address id) public view returns(Organisation memory){
+        return Organisations[id];
+    }
+
+    function getAllOrganisation() external view returns(address[] memory){
+        require(has(centralAuthority,msg.sender) == true, "Only for Central Authority");
+        return OrganisationList;
+    }
     /*
 
-        Doctor
+        Practitioner
 
     */
-    //Add Doctor
+    //Add Practitioner
+    function addPractitioner(Practitioner memory data) external onlyOrganisationAdmin{
+        require(has(organisationAdmin,msg.sender) == true, "Only for Admins");
+        Practitioner storage practitionerData = Practitioners[data.id];
+        practitionerData.id = data.id;
+        practitionerData.name = data.name;
+        practitionerData.telecom = data.telecom;
+        practitionerData.birthDate = data.birthDate;
+        practitionerData.gender = data.gender;
+        practitionerData.homeAddress = data.homeAddress;
+        practitionerData.Communication = data.Communication;
+        practitionerData.memberOrgaisation = data.memberOrgaisation;
 
-    function addDrInfo(address dr_id, string memory firstName, string memory lastName) public{
-        require(has(admin,msg.sender), 'Only For Doctor');
-
-        Doctor storage drInfo = Doctors[dr_id];
-        drInfo.firstName = firstName;
-        drInfo.lastName = lastName;
-        Dr_ids.push(dr_id);
-
-        add(doctor,dr_id);
+        PractitionerList.push(data.id);
+        add(practitioner,data.id);
     }
 
     // function updateInfo(address dr_id, string memory _drInfo_hash) public{
-    //     Doctor storage drInfo = Doctors[msg.sender];
+    //     Practitioner storage drInfo = Practitioners[msg.sender];
     //     drInfo.drHash = _drInfo_hash;
-    //     Dr_ids.push(dr_id);
+    //     PractitionerList.push(dr_id);
     // }
 
-    function addDoctor(address _newdr) external onlyAdmin() {
-        add(doctor,_newdr);
-    }
+    // function addPractitioner(address _newdr) external onlyAdmin() {
+    //     add(practitioner,_newdr);
+    // }
 
-    function delDr(address _accid) external onlyAdmin(){
-        remove(doctor,_accid);
-    }
+    // function delDr(address _accid) external onlyAdmin(){
+    //     remove(practitioner,_accid);
+    // }
 
     function get_drtid() public view returns(address){
         return get_dr_id;
@@ -127,35 +231,39 @@ contract Contract{
         get_dr_id = _id;
     }
 
-    function getDrInfo() public view returns(Doctor memory){
-        return (Doctors[get_dr_id]);
+    function getDrInfo() public view returns(Practitioner memory){
+        return (Practitioners[get_dr_id]);
     }
 
-    function getDr(address _id) public view returns(Doctor memory){
-        return (Doctors[_id]);
+    function getDr(address _id) public view returns(Practitioner memory){
+        return (Practitioners[_id]);
     }
 
     function isDr(address id) public view returns(string memory){
-        require(has(doctor,id), "Only for Doctors");
+        require(has(practitioner,id), "Only for Practitioners");
         return "1";
     }
 
-    function isDoctor(address id) public view returns(int){
-        // require(doctor.has(msg.sender), "Only for Doctors");
-        for(uint i=0;i<=Dr_ids.length;i++){
-            if(Dr_ids[i] == id){
+    function isPractitioner(address id) public view returns(int){
+        // require(practitioner.has(msg.sender), "Only for Practitioners");
+        for(uint i=0;i<=PractitionerList.length;i++){
+            if(PractitionerList[i] == id){
                 return 1;
             }
         }
         return 0;
     }
 
-    function getAllDrs() public view returns(address[] memory){
-        return(Dr_ids);
+    function getAllPractitioners() public view returns(address[] memory){
+        return(PractitionerList);
     }
 
-    function getDoctorCount() public view returns(uint){
-        return(Dr_ids.length);
+    function getPractitionerCount() public view returns(uint){
+        return(PractitionerList.length);
+    }
+
+    function getOrganisationCount() public view returns(uint){
+        return(OrganisationList.length);
     }
 
     // function getAllDrDetails() onlyAdmin() public view returns(string[] memory) {
@@ -167,23 +275,23 @@ contract Contract{
 
     */
     function isPat(address id) public view returns(string memory){
-        require(has(patient,id), "Only for Doctors");
+        require(has(patient,id), "Only for Practitioners");
         return "1";
     }
     // Check is patient
     function isPatient(address id) public view returns(int){
-        for(uint i = 0 ;i<=Patient_ids.length;i++){
-            if(id == Patient_ids[i]){return 1;}
+        for(uint i = 0 ;i<=PatientList.length;i++){
+            if(id == PatientList[i]){return 1;}
         }
         return 0;
     }
 
 
-    function addPatient(address _newpatient) external onlyAdmin() {
-        add(patient,_newpatient);
-    }
+    // function addPatient(address _newpatient) external onl() {
+    //     add(patient,_newpatient);
+    // }
 
-    function addRec(address _patid) external onlyDoctor() {
+    function addRec(address _patid) external onlyPractitioner{
         require(has(patient,_patid) == true, "is not a Patient");
         get_patient_id = _patid;
     }
@@ -191,37 +299,51 @@ contract Contract{
         get_patient_id = _patid;
     }
 
-    function delPat(address _accid) external onlyAdmin(){
-        remove(patient,_accid);
-    }
+    // function delPat(address _accid) external onlyAdmin(){
+    //     remove(patient,_accid);
+    // }
+
     function get() public view  returns(address){
         return msg.sender;
     }
+
     function get_patid() public view returns(address){
         return get_patient_id;
     }
+
     function getPatInfo(address iD)public view returns(Patient memory){
         return (Patients[iD]);
     }
-    function addPatInfo(address pat_id, string memory firstName, string memory lastName) public {
-        require(has(admin,msg.sender) == true, 'Only you Can Add your info ');
-        Patient storage patInfo = Patients[pat_id];
-        patInfo.firstName = firstName;
-        patInfo.lastName = lastName;
-        Patient_ids.push(pat_id);
 
-        add(patient,pat_id);
+    function addPatient(Patient memory data ) external onlyOrganisationAdmin{
+        require(has(organisationAdmin,msg.sender) == true, 'Only for Organisation Admins');
+        require(Patients[data.id].exists == true, "Patient already exists");  
+        Patient storage patientData = Patients[data.id];
+        patientData.id = data.id;
+        patientData.name = data.name;
+        patientData.telecom = data.telecom;
+        patientData.birthDate = data.birthDate;
+        patientData.communication = data.communication;
+        patientData.gender = data.gender;
+        patientData.homeAddress = data.homeAddress;
+        patientData.deceasedBoolean = data.deceasedBoolean;
+        patientData.deceasedDateTime = data.deceasedDateTime;
+        patientData.multipleBirthBoolean = data.multipleBirthBoolean;
+        patientData.multipleBirthInteger = data.multipleBirthInteger;
+        patientData.generalPractitioner = data.generalPractitioner;
+        patientData.managingOrganisation = data.managingOrganisation;
+        patientData.exists = true;
+
+        PatientList.push(data.id);
+        add(patient,data.id);
     }
 
     /*
-
         Medical Records
-
-
     */
 
-    function addMedicalRecord(MedicalRecord memory _record) external onlyDoctor{
-        //require(has(doctor,msg.sender) == true, 'Only Doctor Can Do That');
+    function addMedicalRecord(MedicalRecord memory _record) external onlyPractitioner{
+        //require(has(practitioner,msg.sender) == true, 'Only Practitioner Can Do That');
         _record.timestamp=block.timestamp;
         Records[_record.patientId].push(_record);
         // record.recordType = _record.recordType;

@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { BlockchainService } from 'src/services/blockchain.service';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.sass'],
+  selector: 'app-central-authority-dashboard',
+  templateUrl: './central-authority-dashboard.component.html',
+  styleUrls: ['./central-authority-dashboard.component.sass'],
 })
-export class AdminDashboardComponent implements OnInit {
+export class CentralAuthorityDashboardComponent implements OnInit {
 
   isCollapse: boolean = true;
 
@@ -23,33 +23,23 @@ export class AdminDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.onCheckAdmin()
+    console.log("siu");
+    
+    this.onCheckCentralAuthority()
 
     //TODO
-    this.router.navigate(['admin/admin-dashboard']);
+    this.router.navigate(['central-authority/central-dashboard']);
 
-    
-    
   }
 
- 
-
-  onCheckAdmin(){
+  async onCheckCentralAuthority(){
     this.progressMsg = 'Checking Admin Acess...'
     this.progressWarn = false
-    let checkAdmin = setInterval(() => {
-      let admin = this.blockchainService.admin
-      let currentAccount = this.blockchainService.account
+    let checkAdmin = setInterval(async () => {
+      let currentAccount = this.blockchainService.account;
   
-      console.log("Admin"+admin)
-      console.log("current Account"+currentAccount);
-    
-  
-      if(admin != null && currentAccount != null){
-        if (admin == currentAccount) {
-          this.isAdmin = true
-          console.log(this.blockchainService.LOG);
-        }
+      if(currentAccount != null && await this.blockchainService.contract.methods.isCentralAuthority().call({ from: currentAccount })){
+        this.isAdmin = true
         this.checkProgress = false
         this.progressWarn = true
         this.progressMsg = '<span class="text-danger">Only admin have Acess to this Page.... </span><br> '+

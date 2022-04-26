@@ -13,20 +13,13 @@ export class BlockchainService {
   account: any = [];
   netId: any;
   web3: any;
-
   address: any;
   contract: any;
   netWorkData: any;
   abi: any;
-
-  admin: any;
-
   balance: any;
-
   blockNumber: any;
-
   LOG: any;
-
   Report: any = [];
 
   constructor() {
@@ -52,14 +45,6 @@ export class BlockchainService {
         if (this.netWorkData) {
           this.address = this.netWorkData.address;
           this.contract = this.web3.eth.Contract(this.abi, this.address);
-
-          this.contract.methods
-            .getAdmin()
-            .call()
-            .then((r: any) => {
-              this.admin = r;
-            });
-          console.log(this.admin);
         }
       });
       window.ethereum.on('accountsChanged', (acc:any) => {
@@ -116,5 +101,9 @@ export class BlockchainService {
 
   getContract() {
     return this.contract;
+  }
+
+  async getCounts(){
+    return [await this.contract.methods.getOrganisationCount().call({from:this.account}),0,0];
   }
 }

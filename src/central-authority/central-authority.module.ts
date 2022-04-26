@@ -1,28 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdminRoutingModule } from './admin-routing.module';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminRoutingModule } from './central-authority-routing.module';
+import { CentralAuthorityDashboardComponent } from './admin-dashboard/central-authority-dashboard.component';
 import { SidebarComponent } from './admin-dashboard/sidebar/sidebar.component';
 import { HeaderComponent } from './admin-dashboard/header/header.component';
-import { DoctorComponent } from './doctor/doctor.component';
-import { ViewComponent } from './doctor/view/view.component';
-import { AddComponent } from './doctor/add/add.component';
+import { OrganisationComponent } from './organisation/organisation.component';
+import { ViewComponent } from './organisation/view/view.component';
+import { AddComponent } from './organisation/add/add.component';
 import { FormsModule } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
-import { DoctorService } from './services/doctor.service';
+import { OrganisationService } from './services/organisation.service';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { CardComponent } from './dashboard-home/card/card.component';
 import { ReportsComponent } from './reports/reports.component';
 import { PatientComponent } from './patient/patient.component';
 import { UtilsModule } from 'src/utils/utils.module';
+import { BlockchainService } from 'src/services/blockchain.service';
 
 @NgModule({
   declarations: [
-    AdminDashboardComponent,
+    CentralAuthorityDashboardComponent,
     SidebarComponent,
     HeaderComponent,
-    DoctorComponent,
+    OrganisationComponent,
     ViewComponent,
     AddComponent,
     DashboardHomeComponent,
@@ -31,6 +32,6 @@ import { UtilsModule } from 'src/utils/utils.module';
     PatientComponent
   ],
   imports: [CommonModule, AdminRoutingModule, FormsModule,UtilsModule],
-  providers: [NgxImageCompressService,DoctorService],
+  providers: [NgxImageCompressService,OrganisationService,BlockchainService],
 })
-export class AdminModule {}
+export class CentralAuthorityModule {}

@@ -4,7 +4,8 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { DoctorService } from 'src/admin/services/doctor.service';
+import { OrganisationService } from 'src/central-authority/services/organisation.service';
+import { DoctorService } from 'src/organisation-admin/services/doctor.service';
 
 @Component({
   selector: 'doctor-view',

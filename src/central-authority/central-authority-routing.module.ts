@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { CentralAuthorityDashboardComponent } from './admin-dashboard/central-authority-dashboard.component';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
-import { DoctorComponent } from './doctor/doctor.component';
+import { OrganisationComponent } from './organisation/organisation.component';
 import { PatientComponent } from './patient/patient.component';
 import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminDashboardComponent,
+    component: CentralAuthorityDashboardComponent,
     children: [
-      { path: 'admin-dashboard', component: DashboardHomeComponent },
-      { path: 'doctor', component: DoctorComponent },
+      { path: 'central-dashboard', component: DashboardHomeComponent },
+      { path: 'organisations', component: OrganisationComponent },
       { path: 'patient', component: PatientComponent },
       { path: 'reports', component: ReportsComponent },
     ],
   },
   {
-    path:'',redirectTo:'admin/admin-dashboard'
+    path:'',redirectTo:'central-authority/central-dashboard'
   }
+  
 ];
 
 @NgModule({

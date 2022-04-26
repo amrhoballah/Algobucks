@@ -5,9 +5,9 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'admin',
+    path: 'central-authority',
     loadChildren: () =>
-      import('../admin/admin.module').then((m) => m.AdminModule),
+      import('../central-authority/central-authority.module').then((m) => m.CentralAuthorityModule),
   },
   {
     path: 'doctor',

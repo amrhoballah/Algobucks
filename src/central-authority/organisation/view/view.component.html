@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="container w-100">
+    <div class="content" *ngIf="this.OrganisationDetails.length >= 1">
+      <div class="card mt-2" *ngFor="let Docdetails of this.OrganisationDetails ">
+        <div class="doctor w-100 p-2 d-flex flex-row align-items-center">
+          <div class="doc-image">
+            <img class="border border-1 border-secondary rounded-circle p-1"
+              [src]=' "../../../assets/images/hospital.png"' alt="Doctor Image" width="150px"
+              height="150px">
+          </div>
+          <div class="doc-info d-flex flex-column">
+            <div class="col">
+              <div class="row py-2">
+                <div class="col-md-12">
+                  <b>OrgID: </b> <span class="docID"> <b>{{Docdetails[0]}}</b></span>
+                </div>
+              </div>
+              <div class="row-md-12 d-flex flex-row justify-content-between">
+                <div class="col-md-12 d-flex flex-column">
+                  <div>
+                    <b>Organisation Name : </b> <span class="fName">{{Docdetails[1]}}</span></div>
+                  <div>
+                    <b>Date of Joining : </b> <span class="Doj">{{Docdetails[2].toDateString()}}</span>
+                  </div>
+                  <div>
+                    <b>Street: </b><span class="speciality">{{Docdetails[3][1]}}</span>
+                  </div>
+
+                </div>
+                <div class="col-md-12 d-flex flex-column">
+                  <div>
+                    <b>City : </b><span class="emailID">{{Docdetails[3][2]}}</span></div>
+                  <div>
+                    <b>State: </b><span class="phone">{{Docdetails[3][3]}}</span>
+                  </div>
+                  <div>
+                    <b>Country </b><span class="city">{{Docdetails[3][5]}}</span>
+                  </div>
+                  <div>
+                    <b>Postcode: </b><span class="state">{{Docdetails[3][4]}}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showProgressCard" class="prgrs mt-3 d-flex flex-column align-items-center">
+      <label for="progress">{{progressMsg}}</label>
+      <progress id="progress"></progress>
+    </div>
+
+    <div class="nill d-flex flex-column justify-content-center align-items-center text-center" *ngIf="loadComplete && !loaded">
+      No Organisations In the Network Add Organisations using the above tab<span class="text-primary fw-bold">Add Organisation</span>
+      <button class="btn btn-primary" (click)="GetOrgs()">Retry</button>
+    </div>
+
+  </div>
+  <!-- <app-progress_card [show]="!loaded" [warn]="showProgressWarn" [msg_text]="progressMsg"></app-progress_card> -->
+</div>

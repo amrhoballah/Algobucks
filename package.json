@@ -11,10 +11,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.1.0",
+    "@angular/cdk": "^13.2.3",
     "@angular/common": "~13.1.0",
     "@angular/compiler": "~13.1.0",
     "@angular/core": "~13.1.0",
     "@angular/forms": "~13.1.0",
+    "@angular/material": "^13.3.3",
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
@@ -33,7 +35,9 @@
     "tslib": "^2.3.0",
     "update": "^0.7.4",
     "web3": "1.0.0-beta.55",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "@angular/flex-layout": "^13.0.0-beta.38",
+    "ng-apexcharts": "^1.7.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.3",
