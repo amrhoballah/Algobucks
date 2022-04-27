@@ -7,7 +7,7 @@ import { BlockchainService } from 'src/services/blockchain.service';
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.sass'],
 })
-export class CentralAuthorityDashboardComponent implements OnInit {
+export class OrganisationDashboardComponent implements OnInit {
 
   isCollapse: boolean = true;
 
@@ -26,31 +26,24 @@ export class CentralAuthorityDashboardComponent implements OnInit {
     this.onCheckCentralAuthority()
 
     //TODO
-    this.router.navigate(['admin/admin-dashboard']);
+    this.router.navigate(['organisation/admin-dashboard']);
 
     
     
   }
 
-  onCheckCentralAuthority(){
-    this.progressMsg = 'Checking Admin Acess...'
+  async onCheckCentralAuthority(){
+    this.progressMsg = 'Checking Admin Access...'
     this.progressWarn = false
-    let checkAdmin = setInterval(() => {
-      let admin = this.blockchainService.admin
-      let currentAccount = this.blockchainService.account
-  
-      console.log("Admin"+admin)
-      console.log("current Account"+currentAccount);
-    
-  
-      if(currentAccount != null){
-        if (this.blockchainService.contract.methods.isCentralAuthority().call()) {
-          this.isAdmin = true
-          console.log(this.blockchainService.LOG);
-        }
+    let checkAdmin = setInterval(async () => {
+      let currentAccount = this.blockchainService.account;
+      console.log("ANA HENA FASHKH ")
+      console.log(await this.blockchainService.contract.methods.isOrganisation().call({from: currentAccount}));
+      if(currentAccount != null && await this.blockchainService.contract.methods.isOrganisation().call({ from: currentAccount })){
+        this.isAdmin = true
         this.checkProgress = false
         this.progressWarn = true
-        this.progressMsg = '<span class="text-danger">Only admin have Acess to this Page.... </span><br> '+
+        this.progressMsg = '<span class="text-danger">Only Organisation Admins have Access to this Page.... </span><br> '+
         'Conncet Metamask to your Admin account'
         clearInterval(checkAdmin)
       }

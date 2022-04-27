@@ -10,28 +10,29 @@
               [src]='PatientDetails.imageHash || "../../../assets/images/patient.png"' alt="Doctor Image" width="150px"
               height="150px">
           </div>
-          <div class="pat-info d-flex flex-column">
+          <div *ngIf="PatientDetails.length != 0" class="pat-info d-flex flex-column">
             <div class="col">
               <div class="row py-2 mx-1">
                 <div class="col-md-12">
-                  <b>Patient ID: </b> <span class="docID"> <b>{{PatientDetails.patID}}</b></span>
+                  <b>Patient ID: </b> <span class="docID"> <b>{{PatientDetails.id}}</b></span>
                 </div>
               </div>
               <div class="row-md-12 mx-4 d-flex flex-row justify-content-between">
                 <div class="col-md-12 d-flex flex-column">
                   <div>
-                    Full Name : <span class="fName">{{PatientDetails.fName}} {{PatientDetails.lName}}</span>
+                    Full Name : <span class="fName">{{PatientDetails.name.givenNames}} {{PatientDetails.name.surname}}</span>
                   </div>
                   <div>
-                    Email :<span class="emailID">{{PatientDetails.emailID}}</span></div>
-                  <div>
-                    Phone:<span class="phone">{{PatientDetails.phone}}</span>
+                    <!-- Email :<span class="emailID">{{PatientDetails.telecom.email}}</span> -->
                   </div>
                   <div>
-                    City <span class="city">{{PatientDetails.city}}</span>
+                    Phone:<span class="phone">{{PatientDetails.telecom.phoneNumber}}</span>
                   </div>
                   <div>
-                    State: <span class="state">{{PatientDetails.state}}</span>
+                    City <span class="city">{{PatientDetails.homeAddress.city}}</span>
+                  </div>
+                  <div>
+                    State: <span class="state">{{PatientDetails.homeAddress.state}}</span>
                   </div>
                 </div>
               </div>

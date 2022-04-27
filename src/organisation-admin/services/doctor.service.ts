@@ -35,7 +35,7 @@ export class DoctorService {
     private blockChainService: BlockchainService,
   ) {
     //GET BlockChain Service
-    this.web3 = blockChainService.getWeb3();
+    this.web3 = this.blockChainService.getWeb3();
 
     this.web3.eth.getAccounts((err: any, accs: any) => {
       this.account = accs[0];

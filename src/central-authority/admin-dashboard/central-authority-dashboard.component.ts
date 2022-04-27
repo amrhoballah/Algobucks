@@ -33,7 +33,7 @@ export class CentralAuthorityDashboardComponent implements OnInit {
   }
 
   async onCheckCentralAuthority(){
-    this.progressMsg = 'Checking Admin Acess...'
+    this.progressMsg = 'Checking Admin Access...'
     this.progressWarn = false
     let checkAdmin = setInterval(async () => {
       let currentAccount = this.blockchainService.account;
@@ -42,7 +42,7 @@ export class CentralAuthorityDashboardComponent implements OnInit {
         this.isAdmin = true
         this.checkProgress = false
         this.progressWarn = true
-        this.progressMsg = '<span class="text-danger">Only admin have Acess to this Page.... </span><br> '+
+        this.progressMsg = '<span class="text-danger">Only Central Authority has Access to this Page.... </span><br> '+
         'Conncet Metamask to your Admin account'
         clearInterval(checkAdmin)
       }

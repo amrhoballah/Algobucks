@@ -41,17 +41,13 @@ export class DoctorService {
     console.log(this.account);
 
     this.contract.methods
-      .getAllDrs()
+      .isPractitioner(this.account)
       .call()
       .then((result: any) => {
         console.log(result);
-        this.Doctors = result;
-        if (this.Doctors.length >= 0) {
-          for (var i = 0; i <= this.Doctors.length; i++) {
-            if (this.Doctors[i] == this.account) {
-              this.isDoctor = true;
-            }
-          }
+        //this.Doctors = result;
+        if (result == 1) {
+          this.isDoctor = true;
         }
         this.checkComplete = true;
       })
@@ -82,7 +78,7 @@ export class DoctorService {
     this.patientId = id;
     return new Promise((resolve, reject) => {
       this.contract.methods
-        .isPat(id)
+        .isPatient(id)
         .call()
         .then((result: any) => {
           console.log(result);
@@ -102,7 +98,7 @@ export class DoctorService {
         .call()
         .then((result: any) => {
           console.log(result);
-          resolve({"fName":result.firstName,"lName":result.lastName})
+          resolve(result);
         })
         .catch((err: any) => {
           console.log(err);

@@ -2,59 +2,46 @@ import { Injectable } from '@angular/core';
 import { BlockchainService } from 'src/services/blockchain.service';
 import { IpfsService } from 'src/services/ipfs.service';
 
+const Contract = require('../../../build/contracts/Contract.json');
 @Injectable({
   providedIn: 'root',
 })
 export class PatientService {
   web3: any;
+  abi: any = {};
+  netWorkData: any = {};
+  netId: any;
+  address: any;
   contract: any;
   account: any;
 
   ipfs: any;
 
-  addprogress:boolean = false;
-  added:boolean = false
-  failed:boolean = false
+  msg_text: string = '';
 
+  result: any;
   constructor(
-    private blockchainService: BlockchainService,
+    private blockChainService: BlockchainService,
   ) {
-    this.web3 = blockchainService.getWeb3();
+    this.web3 = this.blockChainService.getWeb3();
 
-    this.contract = blockchainService.getContract();
+    this.web3.eth.getAccounts((err: any, accs: any) => {
+      this.account = accs[0];
+    });
 
-    this.getAcccount();
-  }
+    this.web3.eth.net.getId().then((r: number) => {
+      this.netId = r;
+      this.abi = Contract.abi;
+      this.netWorkData = Contract.networks[this.netId];
 
-  addPatient(pat_id: any, data: any) {
-    console.log("adding Patient");
-    this.contract = this.blockchainService.getContract()
-      this.contract.methods
-        .addPatInfo(pat_id, data.fName, data.lName)
-        .send({ from: this.account })
-        .on("confirmation",(result: any) => {
-          console.log("result",result);
-          if(result){
-            this.addprogress = true
-            this.added = true
-          }
-        })
-        .catch((err: any) => {
-          console.log("error",err);
-          this.addprogress = true
-          this.added = false
-          this.failed = true
-        });
-  }
+      console.log(this.netWorkData);
 
-  getAcccount() {
-    console.log('geting Account...');
-    let getacc = setInterval(() => {
-      this.account = this.blockchainService.getAccount();
-      if (this.account != null) {
-        clearInterval(getacc);
-        return this.account;
+      if (this.netWorkData) {
+        this.address = this.netWorkData.address;
+        this.contract = this.web3.eth.Contract(this.abi, this.address);
+      } else {
+        console.log('Contract not Deployed');
       }
-    }, 1000);
+    });
   }
 }

@@ -18,7 +18,7 @@ export class DoctorDashboardComponent implements OnInit {
 
   constructor(private router: Router, private doctorService: DoctorService) {
     //TODO
-    router.navigate(['/doctor/view-record']);
+    router.navigate(['/doctor/consult']);
   }
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class DoctorDashboardComponent implements OnInit {
           this.isDoctor = true;
         } else {
           this.progressWarn = true;
-          this.progressMsg = 'Only Doctors have acess to this page...';
+          this.progressMsg = 'Only Doctors have access to this page...';
         }
         clearInterval(checkDr);
       }

@@ -15,7 +15,7 @@ export class ConsultationComponent implements OnInit {
   //TODO
   isPatient: boolean = false;
 
-  PatientDetails: any = {};
+  PatientDetails: any = [];
 
   showProggressCard: boolean = false;
   showProgressWarning: boolean = false;
@@ -32,7 +32,7 @@ export class ConsultationComponent implements OnInit {
       .checkIsPatient(this.model.patID)
       .then((result: any) => {
         console.log(result);
-        if (result) {
+        if (result==1) {
           this.progressMsg =
             'Patient ID Found <br> Fetching Patient details From IPFS';
           this.doctorService
@@ -41,10 +41,12 @@ export class ConsultationComponent implements OnInit {
               this.PatientDetails = data;
               this.showProggressCard = false;
               this.isPatient = true;
+              console.log(data);
+              
             })
             .catch((err: any) => {
               this.showProgressWarning = true;
-              this.progressMsg = 'Failed to get Pateint Details';
+              this.progressMsg = 'Failed to get Patient Details';
               console.log(err);
             });
         }

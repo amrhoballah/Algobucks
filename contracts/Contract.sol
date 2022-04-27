@@ -187,6 +187,10 @@ contract Contract{
         require(has(centralAuthority,msg.sender) == true, "Only for Central Authority");
         return OrganisationList;
     }
+
+    function isOrganisation() external view returns(bool){
+        return has(organisationAdmin,msg.sender);
+    }
     /*
 
         Practitioner
@@ -317,7 +321,7 @@ contract Contract{
 
     function addPatient(Patient memory data ) external onlyOrganisationAdmin{
         require(has(organisationAdmin,msg.sender) == true, 'Only for Organisation Admins');
-        require(Patients[data.id].exists == true, "Patient already exists");  
+        //require(Patients[data.id].exists == true, "Patient already exists");  
         Patient storage patientData = Patients[data.id];
         patientData.id = data.id;
         patientData.name = data.name;

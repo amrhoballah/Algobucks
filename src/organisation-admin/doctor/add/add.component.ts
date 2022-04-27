@@ -1,28 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FormControl,FormGroup } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
-import { OrganisationService } from 'src/central-authority/services/organisation.service';
-
-// declare let window: any;
-// const { ethereum } = window;
-
+import { Communication } from 'src/app/models/communication.model';
+import { ContactPoint } from 'src/app/models/contactPoint.model';
+import { Gender, HumanName } from 'src/app/models/humanName.model';
+import { PhysicalAddress } from 'src/app/models/physicalAddress.model';
+import { Practitioner } from 'src/app/models/practitioner.model';
+import { DoctorService } from 'src/organisation-admin/services/doctor.service';
 @Component({
   selector: 'doctor-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.sass'],
 })
 export class AddComponent implements OnInit {
-  model: any = {
-    docID: '',
-    firstName: 'test_name',
-    lastName: 'test_name',
-    emailID: 'test_name@mail.com',
-    phone: '123456789',
-    city: 'city',
-    country: 'state',
-    speciality: 'speciality',
-    imageHash: '',
+
+  name : HumanName = {
+    givenNames: '',
+    surname: ''
   };
+
+  address : PhysicalAddress = {
+    use: 'home',
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: ''
+  }
+
+  communication : Communication = {
+    languages: [],
+    preferred: ''
+  }
+
+  telecom : ContactPoint = {
+    phoneNumber: '',
+    email: ''
+  }
+
+  model : any = {
+    id: '',
+    gender: '',
+    birthDate: 0,
+    memberOrganisation: ''
+  }
+
+  gender : Gender = Gender.UNKNOWN;
 
   image_url: any;
   imageCompressedUrl: string = '';
@@ -36,32 +60,35 @@ export class AddComponent implements OnInit {
 
   constructor(
     private imageCompress: NgxImageCompressService,
-    private doctorService: OrganisationService
+    private doctorService: DoctorService
   ) {}
 
   ngOnInit(): void {
-    // ethereum.on('message', (message: string) => console.log(message));
   }
 
   onAddDocSubmit() {
     this.show = true;
-    this.msg_text = 'Adding Doctor to the Network....';
+    this.msg_text = 'Adding Practitioner to the Network....';
     this.warn = false;
-
-    this.model.imageHash = this.image_url;
-    // add doctor
-    // await this.doctorService.addDoctor(this.model, this.model.docID);
-
-    let data = this.model;
-
+    switch(this.model.gender.toLowerCase()){
+      case "male" : this.gender = Gender.MALE; break;
+      case "female" : this.gender = Gender.FEMALE; break;
+      case "unknown" : this.gender = Gender.UNKNOWN; break;
+      default : this.gender = Gender.OTHER;
+    }
+    let myDate = this.model.birthDate.split("-");
+    let dob = new Date( myDate[0], myDate[1] - 1, myDate[2]);
+    let org = new Practitioner(this.model.id,this.name,this.telecom,this.address,this.gender,dob.getTime(),this.communication,this.doctorService.account);
+    console.log(org);
+    
     this.doctorService.contract.methods
-        .addDrInfo(this.model.docID, this.model.fName, this.model.lName)
+        .addPractitioner(org)
         .send({ from: this.doctorService.account })
         .on("confirmation",(result: any) => {
           console.log('result', result);
-          if (result == 1) {
-            this.msg_text += '<br>User Added to the Blockchain';
-            console.log('User added Successfully');
+          if (result) {
+            this.msg_text += '<br>Practitioner Added to the Blockchain';
+            console.log('Practitioner added Successfully');
             this.success = true
             this.model = {};
             return result;
@@ -75,8 +102,8 @@ export class AddComponent implements OnInit {
         .catch((err: any) => {
           this.warn = !this.warn;
           this.msg_text =
-            'Adding Doctor Failed<br> <small class="fw-light text-danger"><b>"</b>' +
-            this.model.docID +
+            'Adding Practitioner Failed<br> <small class="fw-light text-danger"><b>"</b>' +
+            this.model.id +
             '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
           console.log(err);
           return err;

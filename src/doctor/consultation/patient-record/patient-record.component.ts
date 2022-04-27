@@ -23,7 +23,7 @@ type PatientMedicalrecordType = {
   styleUrls: ['./patient-record.component.sass'],
 })
 export class PatientRecordComponent implements OnInit {
-  @Input() PatientDetails: any = {};
+  @Input() PatientDetails: any = [];
   @Output() saveRecord = new EventEmitter<any>();
 
   model: any;

@@ -1,61 +1,199 @@
-<div class="container-fluid">
-  <div class="container mb-4">
-    <form [noValidate]="false" #docForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3 class="h3 my-3">Add Patient to the Network</h3>
-      <div class="row form-row">
-        <div class="col-12 col-sm-6">
-          <div class="form-group">
-            <label>
-              First Name
-              <sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup>
-            </label>
-            <input [(ngModel)]="model.fName" name="fName" id="fname" type="text" class="form-control"
-              placeholder="first name" required />
-          </div>
-        </div>
-        <div class="col-12 col-sm-6">
-          <div class="form-group">
-            <label>Last Name<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
-            <input [(ngModel)]="model.lName" name="lName" id="lname" type="text" class="form-control"
-              placeholder="last name" />
-          </div>
-        </div>
+<div class="container-fluid d-flex flex-column">
+<div><br><br></div>
+<div class="content">
+      <div class="container-fluid">
+        <div class="container mb-4">
+          <form [noValidate]="false" #docForm="ngForm" (ngSubmit)="onAddPatSubmit()" overflow-auto>
+            <div class="row form-row">
+              <div class="col-12">
+                <div class="usr-image d-flex justify-content-center flex-column align-items-center mt-3 mb-5 object-fit">
+                  <img class="image rounded-circle" [src]=" image_url || '../../../assets/images/patient.png'" alt="user" width="150px">
+                  <!-- <div class="img-c mb-3 mt-3 col-md-6 d-flex flex-column">
+                    <label class="form-label text-center" for="formFile">Select Doctor image</label>
+                    <input class="img-chooser form-control" type="file" id="formFile" (change)="PreviewImage($event)">
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Patient ID<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="model.id" name="parID" id="patid" type="text" class="form-control" required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>
+                    Given Names
+                    <sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup>
+                  </label>
+                  <input [(ngModel)]="name.givenNames" name="fName" id="fname" type="text" class="form-control" required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Surname<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="name.surname" name="lName" id="lname" type="text" class="form-control" required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Date of Birth<sup class="fas fa-asterisk fw-normal text-danger"
+                      style="font-size: 8px;"></sup></label>
+                  <div class="cal-icon">
+                    <input [(ngModel)]="model.birthDate" name="Dob" id="dob" type="date" class="form-control" required />
+                  </div>
+                </div>
+              </div>     
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Gender<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="model.gender" name="gender" id="gender" type="text" class="form-control" required />
+                  <!-- <div class="form-group">
+                 <select [(ngModel)]="gender" class="form-control" required>
+                  <option></option>
+                  <option value="Gender.Male">Male</option>
+                  <option value="Gender.Female">Female</option>
+                  <option value="Gender.Other">Other</option>
+                  <option value="Gender.Unknown">Unknown</option>
+                 </select>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>General Practitioner ID<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="model.generalPractitioner" name="docID" id="accid" type="text" class="form-control" required />
+                </div>
+              </div>
 
-        <div class="col-12 col-sm-6">
-          <div class="form-group">
-            <label>Mobile<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
-            <input [(ngModel)]="model.phone" name="phone" id="mob" type="text" class="form-control" placeholder="mobile"
-              required />
-          </div>
-        </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Email<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="telecom.email" name="emailID" id="email" type="email" class="form-control"
+                     required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Phone Number<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="telecom.phoneNumber" name="phone" id="mob" type="text" class="form-control"
+                    required />
+                </div>
+              </div>
+      
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Street<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="address.street" name="docID" id="accid" type="text" class="form-control"
+                    placeholder="" required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>City<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="address.city" name="city" id="city" type="text" class="form-control" placeholder=""
+                    required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>State<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="address.state" name="state" id="state" type="text" class="form-control" placeholder=""
+                    required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Country<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="address.country" name="speciality" id="spec" type="text" class="form-control"
+                    placeholder="" required />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Postal Code<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="address.postalCode" name="postal" id="post" type="text" class="form-control" placeholder=""
+                    required />
+                </div>
+              </div>
 
-        <div class="col-12">
-          <div class="form-group">
-            <label>Patient Id<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
-            <input [(ngModel)]="model.patID" name="docID" id="accid" type="text" class="form-control"
-              placeholder="patient account id" required />
-          </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Multiple Birth?<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <br>
+                  <input [(ngModel)]="model.multipleBirthBoolean" type="radio" id="yes" name="multBirth" value=true>
+                  <label for="yes">&nbsp;&nbsp;Yes</label>
+                  <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                  <input [(ngModel)]="model.multipleBirthBoolean" type="radio" id="no" name="multBirth" value=false>
+                  <label for="no">&nbsp;&nbsp;No</label>
+                  <!-- <mat-radio-group [(ngModel)]="model.deceasedBoolean" [ngModelOptions]="{standalone: true}">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
+                  </mat-radio-group> -->
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Order in Multiple Birth<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="model.multipleBirthInteger" name="od" id="od" type="number" class="form-control" />
+                </div>
+              </div> 
+              <!-- <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Languages<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <div class="form-group">
+                    <select [(ngModel)]="communication.languages" class="form-control" required multiple>
+                      <option value="Chinese">Chinese - 中文</option>
+                      <option value="Spanish">Spanish - español</option>
+                      <option value="English">English</option>
+                      <option value="Hindi">Hindi - हिन्दी</option>
+                      <option value="Arabic">Arabic - العربية</option>
+                      <option value="Portuguese">Portuguese - português</option>
+                      <option value="Bengali">Bengali - বাংলা</option>
+                      <option value="Russian">Russian - русский</option>
+                      <option value="Japanese">Japanese - 日本語</option>
+                      <option value="Punjabi">Punjabi - ਪੰਜਾਬੀ</option>
+                      <option value="French">French - français</option>
+                      <option value="German">Deutsch - German</option>
+                  </select>
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label>Preferred Language<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+                  <input [(ngModel)]="communication.preferred" name="pref" id="pref" type="text" class="form-control" required />
+                  <!-- <div class="form-group">
+                    <select onchange="changePreferred($event.target.value)" class="form-control" required>
+                      <option></option>
+                      <option value="Chinese">Chinese - 中文</option>
+                      <option value="Spanish">Spanish - español</option>
+                      <option value="English">English</option>
+                      <option value="Hindi">Hindi - हिन्दी</option>
+                      <option value="Arabic">Arabic - العربية</option>
+                      <option value="Portuguese">Portuguese - português</option>
+                      <option value="Bengali">Bengali - বাংলা</option>
+                      <option value="Russian">Russian - русский</option>
+                      <option value="Japanese">Japanese - 日本語</option>
+                      <option value="Punjabi">Punjabi - ਪੰਜਾਬੀ</option>
+                      <option value="French">French - français</option>
+                      <option value="German">Deutsch - German</option>
+                  </select>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+              <div class="form-group" style="margin-top: 1.8em;">
+                <button type="submit" id="btn" class="btn btn-primary form-control" >
+                  Add Patient</button>
+                </div>
+              </div>
+            </div>
+           
+          </form>
         </div>
-        <div class="col-12 col-sm-6">
-          <div class="form-group">
-            <label>City<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
-            <input [(ngModel)]="model.city" name="city" id="city" type="text" class="form-control" placeholder="city"
-              required />
-          </div>
-        </div>
-        <div class="col-12 col-sm-6">
-          <div class="form-group">
-            <label>State</label>
-            <input [(ngModel)]="model.state" name="state" id="state" type="text" class="form-control"
-              placeholder="state" />
-          </div>
-        </div>
+        <app-progress_card [success]="success" [show]="show" [msg_text]="msg_text" [warn]="warn" (retry)="onAddPatSubmit()" (close)="onClose()">
+        </app-progress_card>
       </div>
-      <button type="submit" id="btn" class="btn btn-primary mb-3">
-        Add Patient
-      </button>
-    </form>
+    </div>
   </div>
-  <app-progress_card [success]="success" [show]="show" [msg_text]="msg_text" [warn]="warn" (retry)="onSubmit()" (close)="onClose()">
-  </app-progress_card>
-</div>

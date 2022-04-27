@@ -1,11 +1,12 @@
+import { ThisReceiver } from '@angular/compiler';
 import {
   AfterContentInit,
   AfterViewInit,
   Component,
   OnInit,
 } from '@angular/core';
+import { Organisation } from 'src/app/models/organisation.model';
 import { OrganisationService } from 'src/central-authority/services/organisation.service';
-import { DoctorService } from 'src/organisation-admin/services/doctor.service';
 
 @Component({
   selector: 'doctor-view',
@@ -13,26 +14,12 @@ import { DoctorService } from 'src/organisation-admin/services/doctor.service';
   styleUrls: ['./view.component.sass'],
 })
 export class ViewComponent implements OnInit {
-  model: any = {
-    acID: '',
-  };
 
-  Doctors: string[] = [];
+  Organisations: string[] = [];
 
-  Doctor: any = {
-    docID: '',
-    fName: 'First Name',
-    lName: 'Last Name',
-    Doj: '',
-    emailID: 'test_name@mail.com',
-    phone: '123456789',
-    city: 'city',
-    state: 'state',
-    speciality: 'speciality',
-    imageHash: '',
-  };
+  Organisation:any = {};
 
-  DoctorDetails: any = [this.Doctor];
+  OrganisationDetails: any = [];
 
   loaded : boolean = false;
   loadComplete: boolean = false;
@@ -42,72 +29,75 @@ export class ViewComponent implements OnInit {
   progressMsg:string = ''
   
 
-  constructor(private doctorService: DoctorService) {
-    this.progressMsg = 'Loading Doctor Accounts From Blockchain'
-
-    this.DoctorDetails = doctorService.DoctorDetails
+  constructor(private organisationService: OrganisationService) {
+    this.progressMsg = 'Loading Organisations From Blockchain'
+    this.Organisations = this.organisationService.Organisations;
   }
 
-  ngOnInit(): void {
-
-    this.GetDoctors()
+  ngOnInit(): void {    
+    //this.GetOrgs()
   }
 
-  loadDrDetails() {
-    for (var i = 0; i <= this.Doctors.length; i++) {
-      this.doctorService.getDoctorDetails(this.Doctors[i]);
-    }
-  }
+  // async loadOrgDetails() {
+  //   for (let i = 0; i < this.Organisations.length; i++) {
+  //     let orgDetails = await this.organisationService.getOrgDetails(this.Organisations[i])
+  //     for (const org of this.OrganisationDetails) {
+  //       if(org[0] != org[0]){
+  //         this.OrganisationDetails.push(orgDetails)
+  //       }
+  //     }
+  //   }    
+  // }
 
-  GetDoctors(): any{
-    this.showProgressCard= true;
-    this.showProgressWarn = false;
-    this.progressMsg = ''
+  // GetOrgs(): any{
+  //   this.showProgressCard= true;
+  //   this.showProgressWarn = false;
+  //   this.progressMsg = ''
 
-    if(this.DoctorDetails.length >= 1){
-      this.showProgressCard = false
-      return 0
-    }
+  //   if(this.Organisations.length >= 1){
+  //     this.showProgressCard = false
+  //   }
+
+  //   let orgCall = setInterval(() => {
+  //     console.log('interval');
+
+  //     this.Organisations = this.organisationService.Organisations;
+  //     console.log(this.Organisations.length);
+  //     if (this.Organisations.length >= 1) {
+  //       this.loadOrgDetails();
+  //       this.progressMsg = "Found "+this.Organisations.length + " Accounts"
+  //       clearInterval(orgCall);
+  //     }
+  //     else{
+  //       this.progressMsg = 'No Organisations in the Network....'
+  //     }
+  //   }, 1000);
+
+  //   let OrgDetailsCall = setInterval(() => {
+  //     console.log('loading Org Details');
+  //     console.log('OrgDet len', this.organisationService.OrganisationDetails.length);
+  //     console.log('Org len', this.Organisations.length);
+
+  //     if(this.Organisations.length <= 0){
+  //       clearInterval(OrgDetailsCall)
+  //     }
+
+  //     if(this.OrganisationDetails.length > 0){
+  //       this.loaded = true
+  //     }
+
+  //     if (this.OrganisationDetails.length == this.Organisations.length) {
+  //       console.log(this.organisationService.OrganisationDetails);
+  //       this.showProgressCard = false
+  //       this.loadComplete = true
+  //       this.OrganisationDetails = this.organisationService.OrganisationDetails;
+  //       clearInterval(OrgDetailsCall);
+  //     } else {
+  //       this.progressMsg = "Loading Organisation Details...."
+  //       console.log(' Organisation... fff', this.organisationService.OrganisationDetails);
+  //       this.OrganisationDetails = this.organisationService.OrganisationDetails;
+  //     }
+  //   }, 5000);
     
-    let docCall = setInterval(() => {
-      console.log('interval');
-
-      this.Doctors = this.doctorService.Doctors;
-      if (this.Doctors.length >= 1) {
-        this.loadDrDetails();
-        this.progressMsg = "Found "+this.Doctors.length + " Accounts"
-        clearInterval(docCall);
-      }
-      else{
-        this.progressMsg = 'No Doctors in the Network....'
-      }
-    }, 1000);
-
-    let DoctorDetailsCall = setInterval(() => {
-      console.log('loading Doc Details');
-      console.log('Det len', this.doctorService.DoctorDetails.length);
-      console.log('Doc len', this.Doctors.length);
-
-      if(this.Doctors.length <= 0){
-        clearInterval(DoctorDetailsCall)
-      }
-
-      if(this.doctorService.DoctorDetails.length > 0){
-        this.loaded = true
-      }
-
-      if (this.doctorService.DoctorDetails.length == this.Doctors.length) {
-        console.log(this.doctorService.DoctorDetails);
-        this.showProgressCard = false
-        this.loadComplete = true
-        this.DoctorDetails = this.doctorService.DoctorDetails;
-        clearInterval(DoctorDetailsCall);
-      } else {
-        this.progressMsg = "Loading Doctor Details From IPFS...."
-        console.log('Doctor Details... fff', this.doctorService.DoctorDetails);
-        this.DoctorDetails = this.doctorService.DoctorDetails;
-      }
-    }, 5000);
-    
-  }
+  // }
 }

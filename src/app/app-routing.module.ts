@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('../doctor/doctor.module').then((m) => m.DoctorModule),
   },
+  {
+    path: 'organisation',
+    loadChildren: () =>
+      import('../organisation-admin/admin.module').then((m) => m.AdminModule),
+  },
   { path: '**', component: HomeComponent, redirectTo: '' },
 ];
 
