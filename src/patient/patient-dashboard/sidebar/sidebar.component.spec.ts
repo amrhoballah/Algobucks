@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewRecordComponent } from './view-record.component';
+import { SidebarComponent } from './sidebar.component';
 
-describe('ViewRecordComponent', () => {
-  let component: ViewRecordComponent;
-  let fixture: ComponentFixture<ViewRecordComponent>;
+describe('SidebarComponent', () => {
+  let component: SidebarComponent;
+  let fixture: ComponentFixture<SidebarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewRecordComponent ]
+      declarations: [ SidebarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewRecordComponent);
+    fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

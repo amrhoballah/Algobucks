@@ -27,7 +27,7 @@ export class DoctorDashboardComponent implements OnInit {
   onCheckDoctor() {
     this.progressMsg = 'Checking Doctor Access...'
     this.progressWarn = false
-    let checkDr = setInterval(async () => {
+    let checkDr = setTimeout(async () => {
       let currentAccount = this.blockchainService.account;
       try{      
       if(currentAccount != null && await this.blockchainService.contract.methods.isPractitioner(currentAccount).call()==1){

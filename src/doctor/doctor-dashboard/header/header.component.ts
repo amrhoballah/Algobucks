@@ -7,7 +7,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
       <a
         class="navbar-brand col-md-2 col-lg-2 px-3 text-white fs-bold"
         href="/"
-        >Algobucks</a
+        ><img [src]="'../../../assets/images/logo2-modified.png'"
+      alt="Algobucks Logo" width="140px" height="50px"/></a
       >
       <button
         class="navbar-toggler d-md-none"

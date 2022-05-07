@@ -45,7 +45,7 @@ export class PatientService {
   }
 
   getAcccount() {
-    let getacc = setInterval(() => {
+    let getacc = setTimeout(() => {
       this.account = this.blockchainService.getAccount();
       if (this.account != null) {
         clearInterval(getacc);

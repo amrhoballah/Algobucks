@@ -4,7 +4,7 @@
     <hr />
     <div class="content" *ngIf="this.Patients.length >= 1">
       <div class="card mt-2" *ngFor="let patientData of this.Patients">
-        <button class="btn py-1 px-2" [routerLink]="'consult'" [queryParams]="{patID: patientData.id}"><i class="fas fa-view"></i>View</button>
+        <button class="btn btn-primary" [routerLink]="'consult'" [queryParams]="{patID: patientData.id}"><i class="fas fa-view"></i>View</button>
         <div class="patient w-100 p-2 d-flex flex-row align-items-center">
           <div class="patient-image">
             <img class="border border-1 border-secondary rounded-circle p-1"

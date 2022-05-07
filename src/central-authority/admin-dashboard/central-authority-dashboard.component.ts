@@ -30,7 +30,7 @@ export class CentralAuthorityDashboardComponent implements OnInit {
   onCheckCentralAuthority(){
     this.progressMsg = 'Checking Central Authority Access...'
     this.progressWarn = false
-    let checkAdmin = setInterval(async () => {
+    let checkAdmin = setTimeout(async () => {
       let currentAccount = this.blockchainService.account;
       let isCentral = await this.blockchainService.contract.methods.isCentralAuthority().call({ from: currentAccount });
       

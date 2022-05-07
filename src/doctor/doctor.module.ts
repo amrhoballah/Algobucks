@@ -10,8 +10,6 @@ import { UtilsModule } from 'src/utils/utils.module';
 import { ConsultationComponent } from './consultation/consultation.component';
 import { FormsModule } from '@angular/forms';
 import { PatientRecordComponent } from './consultation/patient-record/patient-record.component';
-import { ViewRecordComponent } from './view-record/view-record.component';
-import { RecordComponent } from './view-record/record/record.component';
 import { ViewAllPatientsComponent } from './view-patients/view.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,8 +27,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     DashboardHomeComponent,
     ConsultationComponent,
     PatientRecordComponent,
-    ViewRecordComponent,
-    RecordComponent,
     ViewAllPatientsComponent,
   ],
   imports: [

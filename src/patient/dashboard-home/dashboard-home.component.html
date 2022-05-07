@@ -1,0 +1,171 @@
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="head">Patient Dashboard</div>
+    <hr>
+    <div class="content">
+      <div class="card mt-2" *ngIf="this.PatientDetails != {}">
+        <div class="patient w-100 p-2 d-flex flex-row align-items-center">
+          <div class="patient-image">
+            <img class="border border-1 border-secondary rounded-circle p-1" [src]="'../../../assets/images/patient.png'"
+              alt="Patient Image" width="150px" height="150px" />
+          </div>
+          <div class="patient-info d-flex flex-column">
+            <div class="col">
+              <div class="row py-2">
+                <div class="col-md-12">
+                  <b>PatID:</b>
+                  <span class="docID">
+                    <b>{{ PatientDetails.id }}</b>
+                  </span>
+                </div>
+              </div>
+              <div class="row-md-12 d-flex flex-row">
+                <div class="col-md-8 d-flex flex-column">
+                  <div>
+                    <b>Full Name:</b>
+                    <span class="fName">
+                      {{ PatientDetails.name.givenNames }}
+                      {{ PatientDetails.name.surname }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Date of Birth:</b>
+                    <span class="Doj">
+                      {{ this.getStringDate(PatientDetails.birthDate) }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Gender:</b>
+                    <span class="speciality">
+                      {{ this.getStringGender(PatientDetails.gender) }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Address:</b>
+                    <span class="address">
+                      {{ PatientDetails.homeAddress.street }},
+                      {{ PatientDetails.homeAddress.city }},
+                      {{ PatientDetails.homeAddress.state }},
+                      {{ PatientDetails.homeAddress.country }},
+                      {{ PatientDetails.homeAddress.postalCode }}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-8 d-flex flex-column">
+                  <div>
+                    <b>Email:</b>
+                    <span class="emailID">{{ PatientDetails.telecom.email }}</span>
+                  </div>
+                  <div>
+                    <b>Phone Number:</b>
+                    <span class="phone">
+                      {{ PatientDetails.telecom.phoneNumber }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Preferred Language:</b>
+                    <span class="city">
+                      {{ PatientDetails.communication.preferred }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="head" *ngIf="this.pastReports.length >= 1">
+      Previous Visit Reports
+    </div>
+    <hr>
+    <div class="content" *ngIf="this.pastReports.length >= 1">
+      <div class="card mt-2">
+      <mat-accordion>
+        <mat-expansion-panel class="patient" *ngFor="let report of this.pastReports; let i = index">
+          <mat-expansion-panel-header [collapsedHeight]="'2.5rem'">
+            <mat-panel-title>
+              Visit Report {{ i + 1 }}: 
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ this.getStringDate(report.timestamp)}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="patient w-100 p-2 d-flex flex-row align-items-center">
+            <div class="patient-info d-flex flex-column">
+              <div class="col">
+                <div class="row py-2">
+                  <div class="col-md-12">
+                    <b>Practitioner: </b>
+                    <span class="docID">
+                      {{ this.getPracName(report.practitionerId) }}
+                    </span>
+                    <br>
+                    <b>Organisation: </b>
+                      <span class="fName">
+                        {{ this.getOrgName(report.organisationId) }}
+                      </span>
+                  </div>
+                </div>
+                <div class="row-md-16 d-flex flex-row">
+                  <div class="col-md-16 d-flex flex-column">
+                    <div>
+                      <b>Diagnosis:</b>
+                      <span class="Doj">
+                        {{report.diagnosis}}
+                      </span>
+                    </div>
+                    <div class="form-group" *ngIf="report.medicationName.length >= 1">
+                      <b>Medication:</b>
+                      <table id="medicines_table" class="table table-hover mb-2">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Medicine Name</th>
+                            <th>Dosage</th>
+                            <th>Unit</th>
+                            <th>no. of Days</th>
+                            <th>Remarks</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let med of report.medicationName; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>{{med}}</td>
+                            <td>{{report.dosage[i]}}</td>
+                            <td>{{report.unit[i]}}</td>
+                            <td>{{report.noOfDays[i]}}</td>
+                            <td>{{report.remarks[i]}}</td>
+                          </tr>
+                      </table>
+                        </div>
+                        <div class="form-group" *ngIf="report.clinicalTests.length >= 1 && report.clinicalTests[0] != ''">
+                          <b>Clinical Tests:</b>
+                          <table id="tests_table" class="table table-hover mb-2">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Test Name</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let med of report.clinicalTests; let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{med}}</td>
+                              </tr>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    </div>
+  </div>
+</div>
+

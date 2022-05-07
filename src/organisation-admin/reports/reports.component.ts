@@ -21,7 +21,7 @@ export class ReportsComponent implements OnInit {
     this.Transactions = 0;
     this.noOfBlocks = 0;
 
-    let getBlockNumber = setInterval(() => {
+    let getBlockNumber = setTimeout(() => {
       this.Transactions = this.blockchainService.blockNumber;
       if (this.Transactions != null) {
         clearInterval(getBlockNumber);
@@ -40,7 +40,7 @@ export class ReportsComponent implements OnInit {
   }
 
   checkReportComplete() {
-    let reportProgrress = setInterval(() => {
+    let reportProgrress = setTimeout(() => {
       if (this.blockchainService.Report.length == this.noOfBlocks) {
         this.reportLoaded = true;
         this.reportToastShow = true

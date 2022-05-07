@@ -35,7 +35,7 @@ export class OrganisationDashboardComponent implements OnInit {
   async onCheckCentralAuthority(){
     this.progressMsg = 'Checking Admin Access...'
     this.progressWarn = false
-    let checkAdmin = setInterval(async () => {
+    let checkAdmin = setTimeout(async () => {
       let currentAccount = this.blockchainService.account;
       if(currentAccount != null && await this.blockchainService.contract.methods.isOrganisation().call({ from: currentAccount })){
         this.isAdmin = true

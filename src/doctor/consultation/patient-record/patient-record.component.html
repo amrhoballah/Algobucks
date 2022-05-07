@@ -78,10 +78,10 @@
 <div class="content" *ngIf="this.pastReports.length >= 1">
   <div class="card mt-2">
   <mat-accordion>
-    <mat-expansion-panel class="patient" *ngFor="let report of this.pastReports">
-      <mat-expansion-panel-header>
+    <mat-expansion-panel class="patient" *ngFor="let report of this.pastReports; let i = index">
+      <mat-expansion-panel-header [collapsedHeight]="'2.5rem'">
         <mat-panel-title>
-          Visit Report: 
+          Visit Report {{ i + 1 }}: 
         </mat-panel-title>
         <mat-panel-description>
           {{ this.getStringDate(report.timestamp)}}
@@ -162,11 +162,12 @@
   </mat-accordion>
 </div>
 </div>
+<br>
 <div *ngIf="!this.addReport">
-  <button (click)="this.onAddReport();" id="siu" class="btn btn-dark mt-3 mb-3"> <i class="fas fa-plus"></i> Add</button>
+  <button (click)="this.onAddReport();" id="siu" class="btn btn-primary"> <i class="fas fa-plus"></i> Add</button>
 </div>
 <div *ngIf="this.addReport">
-  <button (click)="this.onAddReport();" id="siu" class="btn btn-dark mt-3 mb-3"> <i class="fas fa-minus"></i> Cancel</button>
+  <button (click)="this.onAddReport();" id="siu" class="btn btn-primary"> <i class="fas fa-minus"></i> Cancel</button>
 </div>
 <div class="content" *ngIf="this.addReport">
   <div class="head">
@@ -326,7 +327,7 @@
       </div> -->
     </div>
     <div class="col-md-12 mt-3">
-      <button type="submit" id="btn" class="btn btn-dark mt-3 mb-3"> <i class="fas fa-save"></i> Save</button>
+      <button type="submit" id="btn" class="btn btn-primary"> <i class="fas fa-save"></i> Save</button>
     </div>
   </form>
 </div>

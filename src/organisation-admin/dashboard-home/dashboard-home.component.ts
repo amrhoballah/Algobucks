@@ -20,7 +20,7 @@ export class DashboardHomeComponent implements OnInit {
   ngOnInit(): void {
     this.accountBalance = this.blockchainService.getBalance()
 
-    let getBalance = setInterval(() => {
+    let getBalance = setTimeout(() => {
       this.accountBalance = this.blockchainService.getBalance()
       if(this.accountBalance != null){
         this.accountBalance /= 1000000000000000000
@@ -28,7 +28,7 @@ export class DashboardHomeComponent implements OnInit {
       }
     },1000)
 
-    let getCounts = setInterval(async() => {
+    let getCounts = setTimeout(async() => {
       this.Count = await this.blockchainService.getCountsForOrg()
       clearInterval(getCounts);
     },1000)

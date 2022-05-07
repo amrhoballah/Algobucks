@@ -72,7 +72,7 @@ export class DoctorService {
   async checkIsPatient(id: string): Promise<any> {
     this.patientId = id;
     return new Promise(async (resolve, reject) => {
-      this.contract.methods
+      this.blockchainService.contract.methods
         .isPatient(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -86,7 +86,7 @@ export class DoctorService {
 
   async getPatientDetails(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.contract.methods
+      this.blockchainService.contract.methods
         .getPatInfo(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -100,7 +100,7 @@ export class DoctorService {
 
   async getPatientRecords(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.contract.methods
+      this.blockchainService.contract.methods
         .viewMedicalRecord(id)
         .call({ from: await this.getAccount() })
         .then((result: any) => {

@@ -198,6 +198,7 @@ contract Contract{
     }
 
     function getDr(address _id) external view returns(Practitioner memory){
+        require(has(practitioner,msg.sender)|| has(organisationAdmin,msg.sender) || has(patient,msg.sender), "Not Allowed");
         return (Practitioners[_id]);
     }
 

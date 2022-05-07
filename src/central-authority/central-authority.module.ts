@@ -14,7 +14,6 @@ import { OrganisationService } from './services/organisation.service';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { CardComponent } from './dashboard-home/card/card.component';
 import { ReportsComponent } from './reports/reports.component';
-import { PatientComponent } from './patient/patient.component';
 import { UtilsModule } from 'src/utils/utils.module';
 import { BlockchainService } from 'src/services/blockchain.service';
 
@@ -28,8 +27,7 @@ import { BlockchainService } from 'src/services/blockchain.service';
     AddComponent,
     DashboardHomeComponent,
     CardComponent,
-    ReportsComponent,
-    PatientComponent
+    ReportsComponent
   ],
   imports: [CommonModule, AdminRoutingModule, FormsModule,UtilsModule],
   providers: [NgxImageCompressService,OrganisationService,BlockchainService],
