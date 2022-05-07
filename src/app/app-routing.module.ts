@@ -5,14 +5,24 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'admin',
+    path: 'central-authority',
     loadChildren: () =>
-      import('../admin/admin.module').then((m) => m.AdminModule),
+      import('../central-authority/central-authority.module').then((m) => m.CentralAuthorityModule),
   },
   {
     path: 'doctor',
     loadChildren: () =>
       import('../doctor/doctor.module').then((m) => m.DoctorModule),
+  },
+  {
+    path: 'organisation',
+    loadChildren: () =>
+      import('../organisation-admin/admin.module').then((m) => m.AdminModule),
+  },
+  {
+    path: 'patient',
+    loadChildren: () =>
+      import('../patient/patient.module').then((m) => m.PatientModule),
   },
   { path: '**', component: HomeComponent, redirectTo: '' },
 ];

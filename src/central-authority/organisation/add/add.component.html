@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="container mb-4">
+    <form [noValidate]="false" #docForm="ngForm" (ngSubmit)="onAddOrgSubmit()">
+      <div class="row form-row">
+        <div class="col-12">
+          <div class="form-group">
+            <label>
+              Organisation Name
+              <sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup>
+            </label>
+            <input [(ngModel)]="model.name" name="name" id="name" type="text" class="form-control"
+              placeholder="" required />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label>
+              Public Identifier
+              <sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup>
+            </label>
+            <input [(ngModel)]="model.publicID" name="id" id="id" type="text" class="form-control"
+              placeholder="" required />
+          </div>
+        </div>
+        <br><br><br><br>
+        <div class="col-12">
+          <div class="form-group">
+            <label>Street<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+            <input [(ngModel)]="model.street" name="docID" id="accid" type="text" class="form-control"
+              placeholder="" required />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>City<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+            <input [(ngModel)]="model.city" name="city" id="city" type="text" class="form-control" placeholder=""
+              required />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>State<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+            <input [(ngModel)]="model.state" name="state" id="state" type="text" class="form-control" placeholder=""
+              required />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Country<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+            <input [(ngModel)]="model.country" name="speciality" id="spec" type="text" class="form-control"
+              placeholder="" required />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Postal Code<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
+            <input [(ngModel)]="model.postalCode" name="postal" id="post" type="text" class="form-control" placeholder=""
+              required />
+          </div>
+        </div>
+      </div>
+      <button type="submit" id="btn" class="btn btn-primary">
+        Add Organisation</button>
+    </form>
+  </div>
+  <app-progress_card [success]="success" [show]="show" [msg_text]="msg_text" [warn]="warn" (retry)="onAddOrgSubmit()" (close)="onClose()">
+  </app-progress_card>
+</div>

@@ -1,87 +1,133 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DoctorService } from '../services/doctor.service';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { toMedicalRecord } from "src/app/models/mappers/medicalRecord.mapper";
+import { toPatient } from "src/app/models/mappers/patient.mapper";
+import { MedicalRecord } from "src/app/models/medicalRecord.model";
+import { DoctorService } from "../services/doctor.service";
 
 @Component({
-  selector: 'app-consultation',
-  templateUrl: './consultation.component.html',
-  styleUrls: ['./consultation.component.sass'],
+  selector: "app-consultation",
+  templateUrl: "./consultation.component.html",
+  styleUrls: ["./consultation.component.sass"],
 })
 export class ConsultationComponent implements OnInit {
   model: any = {
-    patID: '',
+    patID: "",
   };
 
   //TODO
   isPatient: boolean = false;
 
   PatientDetails: any = {};
+  pastReports: any = [];
 
   showProggressCard: boolean = false;
   showProgressWarning: boolean = false;
-  progressMsg: string = '';
+  progressMsg: string = "";
 
-  constructor(private doctorService: DoctorService) {}
+  constructor(
+    private doctorService: DoctorService,
+    private acitvatedRoute: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.model.patID = this.acitvatedRoute.snapshot.queryParams["patID"];
+    if (
+      this.model.patID != undefined &&
+      this.model.patID != null &&
+      this.model.patID != ""
+    ) {
+      this.onPatIDSubmit();
+    }
+  }
 
   onPatIDSubmit() {
     this.showProggressCard = true;
-    this.progressMsg = 'Checking for Patient ID';
+    this.progressMsg = "Checking for Patient ID";
     this.doctorService
       .checkIsPatient(this.model.patID)
       .then((result: any) => {
-        console.log(result);
-        if (result) {
+        if (result == 1) {
           this.progressMsg =
-            'Patient ID Found <br> Fetching Patient details From IPFS';
+            "Patient ID Found <br> Fetching Patient details From IPFS";
           this.doctorService
             .getPatientDetails(this.model.patID)
             .then((data: any) => {
-              this.PatientDetails = data;
+              this.PatientDetails = toPatient(data);
               this.showProggressCard = false;
               this.isPatient = true;
             })
-            .catch((err: any) => {
-              this.showProgressWarning = true;
-              this.progressMsg = 'Failed to get Pateint Details';
-              console.log(err);
+            .then(() => {
+              this.doctorService
+                .getPatientRecords(this.model.patID)
+                .then((data: any) => {
+                  for (const datum of data) {
+                    this.pastReports.push(toMedicalRecord(datum));
+                  }
+                  this.showProggressCard = false;
+                  this.isPatient = true;
+                })
+                .catch((err: any) => {
+                  this.showProgressWarning = true;
+                  this.progressMsg = "Failed to get Patient Details";
+                });
             });
-        }
-        else{
+        } else {
           this.showProgressWarning = true;
-          this.progressMsg = 'Patient Doesnot Exist in the network......';
+          this.progressMsg = "Patient does not exist in the network......";
         }
       })
       .catch((err: any) => {
         this.showProgressWarning = true;
-        this.progressMsg = 'Patient Doesnot Exist in the network......';
-        console.log(err);
+        this.progressMsg = "Patient does not exist in the network......";
       });
   }
 
-  onMedRecordSave(data: any) {
-    this.progressMsg = 'Saving Med Record in block chain....'
-    this.showProggressCard = true
+  async onMedRecordSave(data: any) {
+    this.progressMsg = "Saving Medical Record in blockchain....";
+    this.showProggressCard = true;
+    let medName = [];
+    let medDosage = [];
+    let medUnit = [];
+    let medNoOfDays = [];
+    let medRemarks = [];
+    for (const med of data.treatment) {
+      medName.push(med.medicationName);
+      medDosage.push(med.dosage);
+      medUnit.push(med.unit);
+      medNoOfDays.push(med.noOfDays);
+      medRemarks.push(med.remarks);
+    }
+    let medRec = new MedicalRecord(
+      this.model.patID,
+      await this.doctorService.getAccount(),
+      await this.doctorService.getAccount(),
+      Date.now(),
+      data.diagnosis,
+      medName,
+      medDosage,
+      medUnit,
+      medNoOfDays,
+      medRemarks,
+      data.clinicalTests
+    );
     this.doctorService
-      .savePatientMedRecord(data)
+      .savePatientMedRecord(medRec)
       .then((result: any) => {
         if (result) {
-          this.progressMsg = 'Medical record added to the blockchian'
-          this.showProggressCard = false
-          console.log(result);
+          this.progressMsg = "Medical record added to the blockchian";
+          this.showProggressCard = false;
         }
       })
       .catch((err: any) => {
-        this.showProgressWarning = true
-        console.log(err);
+        this.showProgressWarning = true;
       });
   }
 
-  onRetry(){
-    this.model.patID = ''
-    this.showProggressCard = false
-    this.progressMsg = ''
-    this.showProgressWarning = false
+  onRetry() {
+    this.model.patID = "";
+    this.showProggressCard = false;
+    this.progressMsg = "";
+    this.showProgressWarning = false;
   }
 }

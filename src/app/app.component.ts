@@ -34,9 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   load() {
-    console.log('loading....');
     this.blockChainService.getWeb3Provider().then((result: Web3) => {
-      console.log(result);
       this.accounts = result.eth.getAccounts((err, accs) => {
         if(accs[0] != null){
           this.accounts = accs[0]

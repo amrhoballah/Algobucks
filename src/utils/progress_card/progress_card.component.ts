@@ -22,9 +22,7 @@ export class Progress_cardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    
-    console.log(this.show, this.msg_text);
+  ngOnInit() {    
   }
 
   onRetry() {

@@ -1,0 +1,209 @@
+{
+  "contractName": "Misc",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.11+commit.d7f03943\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Misc.sol\":\"Misc\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Misc.sol\":{\"keccak256\":\"0xebb0a6baa61f84a188242cc49eb76667ae43aaf285b42602528720290e0eb8df\",\"urls\":[\"bzz-raw://fdafbd4aad9e349c7cb476b44c050634c4c874c9b2a8b438e69f6a64adbf8595\",\"dweb:/ipfs/Qmbo3189EvJPthRFscKcADFUQksqgMJNM4SJPDrEFToVxw\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212204343e5e81b65d69d3e296253f345ccecc3d4ea82cce83b696d8abfa2f8719bd464736f6c634300080b0033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212204343e5e81b65d69d3e296253f345ccecc3d4ea82cce83b696d8abfa2f8719bd464736f6c634300080b0033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "28:1854:1:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "28:1854:1:-:0;;;;;",
+  "source": "pragma solidity >= 0.8.11;\n\ncontract Misc{\n    enum PatientContactRelationship {GUARDIAN, PARTNER, FRIEND, FAMILY, CAREGIVER}\n\n    // struct Contact{\n    //     PatientContactRelationship relationship;\n    //     HumanName name;\n    //     ContactPoint telecom;\n    //     PhysicalAddress homeAddress;\n    //     Gender gender;\n    // }\n\n    // function getPatientCountPerDoc() public onlyPractitioner view returns(uint){\n    //     uint count = 0;\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.generalPractitioner == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     return(count);\n    // }\n\n     // function getCountPerOrg() external onlyOrganisationAdmin view returns(string memory){\n    //     uint count = 0;\n    //     uint count1 = 0;\n    //     for(uint i=0;i<PractitionerList.length;i++){\n    //         Practitioner storage practitionerData = Practitioners[PractitionerList[i]];\n    //         if(practitionerData.memberOrgaisation == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.managingOrganisation == msg.sender){\n    //             count1++;\n    //         }\n    //     }\n    //     return string(abi.encodePacked(count, \":\", count1));\n    // }\n    \n\n    // function getPatientCountPerOrg() external onlyOrganisationAdmin view returns(uint){\n    //     uint count = 0;\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.managingOrganisation == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     return(count);\n    // }\n}\n",
+  "sourcePath": "/Users/amrhoballah/Documents/GitHub/Algobucks/contracts/Misc.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Misc.sol",
+    "exportedSymbols": {
+      "Misc": [
+        1124
+      ]
+    },
+    "id": 1125,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1117,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:26:1"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Misc",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 1124,
+        "linearizedBaseContracts": [
+          1124
+        ],
+        "name": "Misc",
+        "nameLocation": "37:4:1",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Misc.PatientContactRelationship",
+            "id": 1123,
+            "members": [
+              {
+                "id": 1118,
+                "name": "GUARDIAN",
+                "nameLocation": "80:8:1",
+                "nodeType": "EnumValue",
+                "src": "80:8:1"
+              },
+              {
+                "id": 1119,
+                "name": "PARTNER",
+                "nameLocation": "90:7:1",
+                "nodeType": "EnumValue",
+                "src": "90:7:1"
+              },
+              {
+                "id": 1120,
+                "name": "FRIEND",
+                "nameLocation": "99:6:1",
+                "nodeType": "EnumValue",
+                "src": "99:6:1"
+              },
+              {
+                "id": 1121,
+                "name": "FAMILY",
+                "nameLocation": "107:6:1",
+                "nodeType": "EnumValue",
+                "src": "107:6:1"
+              },
+              {
+                "id": 1122,
+                "name": "CAREGIVER",
+                "nameLocation": "115:9:1",
+                "nodeType": "EnumValue",
+                "src": "115:9:1"
+              }
+            ],
+            "name": "PatientContactRelationship",
+            "nameLocation": "52:26:1",
+            "nodeType": "EnumDefinition",
+            "src": "47:78:1"
+          }
+        ],
+        "scope": 1125,
+        "src": "28:1854:1",
+        "usedErrors": []
+      }
+    ],
+    "src": "0:1883:1"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/Misc.sol",
+    "exportedSymbols": {
+      "Misc": [
+        1124
+      ]
+    },
+    "id": 1125,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1117,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:26:1"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Misc",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 1124,
+        "linearizedBaseContracts": [
+          1124
+        ],
+        "name": "Misc",
+        "nameLocation": "37:4:1",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Misc.PatientContactRelationship",
+            "id": 1123,
+            "members": [
+              {
+                "id": 1118,
+                "name": "GUARDIAN",
+                "nameLocation": "80:8:1",
+                "nodeType": "EnumValue",
+                "src": "80:8:1"
+              },
+              {
+                "id": 1119,
+                "name": "PARTNER",
+                "nameLocation": "90:7:1",
+                "nodeType": "EnumValue",
+                "src": "90:7:1"
+              },
+              {
+                "id": 1120,
+                "name": "FRIEND",
+                "nameLocation": "99:6:1",
+                "nodeType": "EnumValue",
+                "src": "99:6:1"
+              },
+              {
+                "id": 1121,
+                "name": "FAMILY",
+                "nameLocation": "107:6:1",
+                "nodeType": "EnumValue",
+                "src": "107:6:1"
+              },
+              {
+                "id": 1122,
+                "name": "CAREGIVER",
+                "nameLocation": "115:9:1",
+                "nodeType": "EnumValue",
+                "src": "115:9:1"
+              }
+            ],
+            "name": "PatientContactRelationship",
+            "nameLocation": "52:26:1",
+            "nodeType": "EnumDefinition",
+            "src": "47:78:1"
+          }
+        ],
+        "scope": 1125,
+        "src": "28:1854:1",
+        "usedErrors": []
+      }
+    ],
+    "src": "0:1883:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.11+commit.d7f03943.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.6",
+  "updatedAt": "2022-05-07T01:57:15.069Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
