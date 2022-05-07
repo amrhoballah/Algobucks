@@ -27,20 +27,17 @@ export class PatientService {
   }
 
   addPatient(pat_id: any, data: any) {
-    console.log("adding Patient");
     this.contract = this.blockchainService.getContract()
       this.contract.methods
         .addPatInfo(pat_id, data.fName, data.lName)
         .send({ from: this.account })
         .on("confirmation",(result: any) => {
-          console.log("result",result);
           if(result){
             this.addprogress = true
             this.added = true
           }
         })
         .catch((err: any) => {
-          console.log("error",err);
           this.addprogress = true
           this.added = false
           this.failed = true
@@ -48,7 +45,6 @@ export class PatientService {
   }
 
   getAcccount() {
-    console.log('geting Account...');
     let getacc = setInterval(() => {
       this.account = this.blockchainService.getAccount();
       if (this.account != null) {

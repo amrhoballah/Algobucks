@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { rejects } from 'assert';
-import { resolve } from 'dns';
-import { Observable } from 'rxjs';
-import { BlockchainService } from 'src/services/blockchain.service';
-const EthCrypto = require('eth-crypto');
+import { Injectable } from "@angular/core";
+import { rejects } from "assert";
+import { resolve } from "dns";
+import { from, Observable } from "rxjs";
+import { toPractitioner } from "src/app/models/mappers/practitioner.mapper";
+import { BlockchainService } from "src/services/blockchain.service";
+const EthCrypto = require("eth-crypto");
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DoctorService {
   web3: any;
@@ -20,171 +21,108 @@ export class DoctorService {
   DoctorDetails: any = {};
 
   PatientDetails: any = {};
-  patientId: string = '';
+  patientId: string = "";
 
   ipfs: any;
 
-  constructor(
-    private blockchainService: BlockchainService,
-  ) {
-    this.web3 = blockchainService.getWeb3();
-    this.contract = blockchainService.getContract();
-    this.account = blockchainService.getAccount();
-
+  constructor(private blockchainService: BlockchainService) {
+    this.web3 = this.blockchainService.getWeb3();
+    this.contract = this.blockchainService.getContract();
+    this.account = this.blockchainService.getAccount();
   }
 
-  checkisDr() {
+  async getAccount() {
+    return await this.blockchainService.getAccount();
+  }
+
+  async checkisDr() {
     this.contract = this.blockchainService.contract;
-    console.log(this.contract);
 
     this.account = this.blockchainService.account;
-    console.log(this.account);
 
-    this.contract.methods
+    await this.contract.methods
       .isPractitioner(this.account)
       .call()
       .then((result: any) => {
-        console.log(result);
-        //this.Doctors = result;
         if (result == 1) {
           this.isDoctor = true;
         }
         this.checkComplete = true;
       })
-      .catch((err: any) => {
-        console.log(err);
-      });
+      .catch((err: any) => {});
   }
 
   async getDoctor(): Promise<any> {
-    this.contract = this.blockchainService.contract;
-    return new Promise((resolve, reject) => {
-      this.contract.methods
-        .getDr(this.account)
+    return new Promise(async (resolve, reject) => {
+      await this.blockchainService.contract.methods
+        .getDr(await this.blockchainService.getAccount())
         .call()
-        .then(async (result: any) => {
-          console.log(result);
-          await this.ipfs.cat(result).then((data: any) => {
-            this.DoctorDetails = data;
-            resolve(this.DoctorDetails);
-            JSON.parse(this.DoctorDetails);
-            return this.DoctorDetails;
-          });
+        .then((result: any) => {
+          resolve(toPractitioner(result));
+          // await this.ipfs.cat(result).then((data: any) => {
+          //   this.DoctorDetails = data;
+          //   resolve(this.DoctorDetails);
+          //   JSON.parse(this.DoctorDetails);
+          //   return this.DoctorDetails;
+          // });
         });
     });
   }
 
   async checkIsPatient(id: string): Promise<any> {
     this.patientId = id;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.contract.methods
         .isPatient(id)
-        .call()
+        .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
-          console.log(result);
           resolve(result);
         })
         .catch((err: any) => {
-          console.log(err);
           reject(err);
         });
     });
   }
 
   async getPatientDetails(id: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.contract.methods
         .getPatInfo(id)
-        .call()
+        .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
-          console.log(result);
           resolve(result);
         })
         .catch((err: any) => {
-          console.log(err);
+          reject(err);
+        });
+    });
+  }
+
+  async getPatientRecords(id: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.contract.methods
+        .viewMedicalRecord(id)
+        .call({ from: await this.getAccount() })
+        .then((result: any) => {
+          resolve(result);
+        })
+        .catch((err: any) => {
           reject(err);
         });
     });
   }
 
   async savePatientMedRecord(data: any): Promise<any> {
-    console.log(this.patientId, data);
-    let PatientData = {
-      doctor: this.account,
-      data: data,
-      date: Date.now()
-    }
-    return new Promise((resolve, reject) => {
-      this.getPatientRecords(this.patientId)
-        .then((record: any) => {
-          console.log(record);
-
-          let PatientRecord;
-
-          if(record != null){
-            record['MedRecord'].push(PatientData)
-            PatientRecord = record
-          }
-          else{
-            PatientRecord = { "MedRecord":[PatientData] };
-          }
-
-          console.log(PatientRecord);
-          this.ipfs
-            .addJSON(PatientRecord)
-            .then((IPFSHash: any) => {
-              console.log(IPFSHash);
-              this.contract.methods
-                .addMedRecord(IPFSHash, this.patientId)
-                .send({ from: this.account })
-                .on('confirmation', (result: any) => {
-                  console.log(result);
-                  resolve(result);
-                })
-                .on('error', (err: any) => {
-                  console.log(err);
-                  reject(err);
-                });
-            })
-            .catch((err: any) => {
-              console.log(err);
-              reject(err);
-            });
-        })
-        .catch((err: any) => {
-          console.log(err);
-          reject(err);
-        });
-    });
-  }
-
-  async getPatientRecords(id: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.contract.methods
-        .viewMedRec(id)
-        .call()
-        .then((result: any) => {
-          console.log(result);
-          if (result.length >= 1) {
-            this.ipfs
-              .cat(result)
-              .then((record: any) => {
-                console.log(JSON.parse(record));
-                resolve(JSON.parse(record));
-              })
-              .catch((err: any) => {
-                console.log(err);
-                reject(err);
-              });
-          }
-          else{
-            resolve(null)
-          }
+        .addMedicalRecord(data)
+        .send({ from: await this.getAccount() })
+        .on("confirmation", (result: any) => {
+          resolve(result);
         })
-        .catch((err: any) => {
-          console.log(err);
+        .on("error", (err: any) => {
           reject(err);
         });
-    });
+    }).catch((err: any) => {});
   }
 }

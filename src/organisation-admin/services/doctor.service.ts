@@ -46,34 +46,18 @@ export class DoctorService {
       this.abi = Contract.abi;
       this.netWorkData = Contract.networks[this.netId];
 
-      console.log(this.netWorkData);
 
       if (this.netWorkData) {
         this.address = this.netWorkData.address;
         this.contract = this.web3.eth.Contract(this.abi, this.address);
-
-        console.log(this.contract.methods.getAdmin.call());
-        this.Doctors = this.contract.methods.getAllDrs
-          .call()
-          .then((docs: string[]) => {
-            this.Doctors = docs;
-            console.log(this.Doctors);
-          });
-        console.log('Doctors', this.Doctors);
-      } else {
-        console.log('Contract not Deployed');
       }
     });
 
   }
 
   getDoctorDetails(docID: any): Promise<any> {
-    console.log('DocID', docID);
     return this.contract.methods
       .getDr(docID)
-      .call()
-      .then((data : String) => {
-        console.log(data);
-      });
+      .call();
   }
 }

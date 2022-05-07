@@ -7,36 +7,33 @@ import { DoctorService } from '../services/doctor.service';
   styleUrls: ['./dashboard-home.component.sass'],
 })
 export class DashboardHomeComponent implements OnInit {
-  DoctorDetails: any = {
-    docID: '',
-    fName: 'First Name',
-    lName: 'Last Name',
-    Doj: '',
-    emailID: 'test_name@mail.com',
-    phone: '123456789',
-    city: 'city',
-    state: 'state',
-    speciality: 'speciality',
-    imageHash: null,
-  };
+  DoctorDetails: any = {};
 
-  constructor(private doctorService: DoctorService) {
-    this.DoctorDetails = [];
-  }
+  constructor(private doctorService: DoctorService) {}
 
-  ngOnInit(): void {
-    // this.check();
-    setTimeout(()=>{
+  async ngOnInit(): Promise<void> {
+    setTimeout(() => {
       this.getDoctorDetails()
-    },3000)
-    
+    }, 1000);
   }
 
   async getDoctorDetails(){
-    this.doctorService.getDoctor().then((data:any) =>{
-      
-      this.DoctorDetails = JSON.parse(data)
+    await this.doctorService.getDoctor().then((data:any) =>{
+      this.DoctorDetails = data
     })
+  }
+
+  getStringDate(date : number):string{
+    return new Date(date*1).toDateString();
+  }
+
+  getStringGender(data : any):string{
+    switch(data){
+      case 0: return "Male"
+      case 1: return "Female"
+      case 2: return "Unknown"
+      default: return "Other"
+    }
   }
 
 }

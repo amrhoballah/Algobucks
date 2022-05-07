@@ -11,7 +11,7 @@ export class Practitioner{
         public homeAddress: PhysicalAddress,
         public gender:Gender,
         public birthDate: number,
-        public Communication: Communication,
+        public communication: Communication,
         public memberOrgaisation: string
         ){
     }

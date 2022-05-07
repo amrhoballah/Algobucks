@@ -19,23 +19,18 @@ export class DashboardHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountBalance = this.blockchainService.getBalance()
-    console.log(this.accountBalance);
 
     let getBalance = setInterval(() => {
       this.accountBalance = this.blockchainService.getBalance()
       if(this.accountBalance != null){
         this.accountBalance /= 1000000000000000000
-        console.log("Balance",this.accountBalance);
         clearInterval(getBalance);
       }
     },1000)
 
-    let getCounts = setInterval(async() => {
-      this.Count = await this.blockchainService.getCounts()
-      if(this.Count != []){    
-        console.log("Count",this.Count);
-        clearInterval(getCounts);
-      }
+    let getCounts = setTimeout(async() => {
+      this.Count = await this.blockchainService.getCountsForCA()
+      clearInterval(getCounts);
     },1000)
   }
 

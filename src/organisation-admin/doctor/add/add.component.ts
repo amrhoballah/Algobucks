@@ -79,23 +79,19 @@ export class AddComponent implements OnInit {
     let myDate = this.model.birthDate.split("-");
     let dob = new Date( myDate[0], myDate[1] - 1, myDate[2]);
     let org = new Practitioner(this.model.id,this.name,this.telecom,this.address,this.gender,dob.getTime(),this.communication,this.doctorService.account);
-    console.log(org);
     
     this.doctorService.contract.methods
         .addPractitioner(org)
         .send({ from: this.doctorService.account })
         .on("confirmation",(result: any) => {
-          console.log('result', result);
           if (result) {
             this.msg_text += '<br>Practitioner Added to the Blockchain';
-            console.log('Practitioner added Successfully');
             this.success = true
             this.model = {};
             return result;
           } else {
             this.warn = !this.warn;
             this.msg_text = this.doctorService.msg_text;
-            console.log(result);
             return result;
           }
         })
@@ -105,7 +101,6 @@ export class AddComponent implements OnInit {
             'Adding Practitioner Failed<br> <small class="fw-light text-danger"><b>"</b>' +
             this.model.id +
             '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
-          console.log(err);
           return err;
         });
   }
@@ -129,7 +124,6 @@ export class AddComponent implements OnInit {
         this.image_url = this.imageCompressedUrl;
       })
       .catch((er) => {
-        console.log(er);
       });
   }
 

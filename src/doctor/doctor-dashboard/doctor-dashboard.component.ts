@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DoctorService } from '../services/doctor.service';
+import { BlockchainService } from 'src/services/blockchain.service';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -16,38 +16,35 @@ export class DoctorDashboardComponent implements OnInit {
   progressWarn: boolean = false;
   progressMsg: string = 'Checking Doctor....';
 
-  constructor(private router: Router, private doctorService: DoctorService) {
-    //TODO
-    router.navigate(['/doctor/consult']);
+  constructor(private router: Router, private blockchainService: BlockchainService) {
   }
 
   ngOnInit(): void {
     this.onCheckDoctor();
+    this.router.navigate(['/doctor/dashboard']);
   }
 
   onCheckDoctor() {
-    this.checkProgress = true;
-    this.progressWarn = false;
-    this.progressMsg = 'Checking Doctor....';
-
-    var count = 0;
-
-    let checkDr = setInterval(() => {
-      this.doctorService.checkisDr();
-      if (this.doctorService.checkComplete) {
-        if (this.doctorService.isDoctor) {
-          this.isDoctor = true;
-        } else {
-          this.progressWarn = true;
-          this.progressMsg = 'Only Doctors have access to this page...';
-        }
-        clearInterval(checkDr);
+    this.progressMsg = 'Checking Doctor Access...'
+    this.progressWarn = false
+    let checkDr = setInterval(async () => {
+      let currentAccount = this.blockchainService.account;
+      try{      
+      if(currentAccount != null && await this.blockchainService.contract.methods.isPractitioner(currentAccount).call()==1){
+        this.isDoctor = true
+        this.checkProgress = false
+        this.progressWarn = true
+        this.progressMsg = '<span class="text-danger">Only Doctors have access to this page.... </span><br> '+
+        'Conncet Metamask to your Doctor account'
+        clearInterval(checkDr)
       }
-
-      if (count >= 50) {
-        clearInterval(checkDr);
+      else{        
+        clearInterval(checkDr)
+        this.router.navigate(['/']);
       }
-      count++;
-    }, 1000);
+    }
+    catch(err){      
+    }
+    },1000)
   }
 }

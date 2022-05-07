@@ -6,7 +6,6 @@ import { OrganisationDashboardComponent } from './admin-dashboard/admin-dashboar
 import { SidebarComponent } from './admin-dashboard/sidebar/sidebar.component';
 import { HeaderComponent } from './admin-dashboard/header/header.component';
 import { DoctorComponent } from './doctor/doctor.component';
-import { ViewComponent } from './doctor/view/view.component';
 import { AddComponent } from './doctor/add/add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
@@ -33,6 +32,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ViewAllDoctorsComponent } from './doctor/view-doctors/view.component';
 
 @NgModule({
   declarations: [
@@ -40,12 +40,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SidebarComponent,
     HeaderComponent,
     DoctorComponent,
-    ViewComponent,
     AddComponent,
     DashboardHomeComponent,
     CardComponent,
     ReportsComponent,
-    PatientComponent
+    PatientComponent,
+    ViewAllDoctorsComponent
   ],
   imports: [ 
     CommonModule,

@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="container w-100">
+    <div class="head">My Patients</div>
+    <hr />
+    <div class="content" *ngIf="this.Patients.length >= 1">
+      <div class="card mt-2" *ngFor="let patientData of this.Patients">
+        <button class="btn py-1 px-2" [routerLink]="'consult'" [queryParams]="{patID: patientData.id}"><i class="fas fa-view"></i>View</button>
+        <div class="patient w-100 p-2 d-flex flex-row align-items-center">
+          <div class="patient-image">
+            <img class="border border-1 border-secondary rounded-circle p-1"
+              [src]="'../../../assets/images/patient.png'" alt="Patient Image" width="150px" height="150px" />
+          </div>
+          <div class="patient-info d-flex flex-column">
+            <div class="col">
+              <div class="row py-2">
+                <div class="col-md-12">
+                  <b>PatID:</b>
+                  <span class="docID">
+                    <b>{{ patientData.id }}</b>
+                  </span>
+                </div>
+              </div>
+              <div class="row-md-12 d-flex flex-row">
+                <div class="col-md-8 d-flex flex-column">
+                  <div>
+                    <b>Full Name:</b>
+                    <span class="fName">
+                      {{ patientData.name.givenNames }}
+                      {{ patientData.name.surname }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Date of Birth:</b>
+                    <span class="Doj">
+                      {{ this.getStringDate(patientData.birthDate) }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Gender:</b>
+                    <span class="speciality">
+                      {{ this.getStringGender(patientData.gender) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-8 d-flex flex-column">
+                  <div>
+                    <b>Email:</b>
+                    <span class="emailID">{{ patientData.telecom.email }}</span>
+                  </div>
+                  <div>
+                    <b>Phone Number:</b>
+                    <span class="phone">
+                      {{ patientData.telecom.phoneNumber }}
+                    </span>
+                  </div>
+                  <div>
+                    <b>Preferred Language:</b>
+                    <span class="city">
+                      {{ patientData.communication.preferred }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showProgressCard" class="prgrs mt-3 d-flex flex-column align-items-center">
+      <label for="progress">{{ progressMsg }}</label>
+      <progress id="progress"></progress>
+    </div>
+
+    <div class="nill d-flex flex-column justify-content-center align-items-center text-center"
+      *ngIf="loadComplete && !loaded">
+      No Patients In the Network Add Patients using the above tab
+      <span class="text-primary fw-bold">Add Patient</span>
+      <button class="btn btn-primary" (click)="ngOnInit()">Retry</button>
+    </div>
+  </div>
+  <!-- <app-progress_card [show]="!loaded" [warn]="showProgressWarn" [msg_text]="progressMsg"></app-progress_card> -->
+</div>

@@ -1,47 +1,57 @@
-.container
-  width: 100%
-  height: 100%
-  .patient-details
-    font-family: 'Roboto',cursive
-    font-size: 13px
-    color: #0a0275
-    font-weight: 400
-    span
-      color: #024694
-.rec-form
-  font-family: cursive
-  font-weight: 200
-  border: 1px solid #acacac1c
-  padding: 0px
-  margin: 0px
-  border-radius: 15px
-  background-color: #d3d3d352
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset
-  form
+.head
+    margin-top: 15px
+    font-size: 20px
+    font-family: 'Poppins',sans-serif
+    font-weight: 500
+.content
+  width : 100%
+  height : 100%
+  .card
     width: 100%
-    display: flex
-    flex-direction: column
-    table
-      th
-        font-family: cursive
-        font-weight: bold
-input,option
-  width: 100%
-  margin: 0px
-  font-size: 12px
-  font-family: 'Popins',sans-serif
-  border-radius: 10px
-select
-  border-radius: 10px
-  color: #333
-.files-preview
-  width: 100%
-  display: flex
-  flex-direction: row
-  .preview
-    img
-      padding: 2px
-      width: 150px
-      height: 200px
-      border: 1px solid #37b8f3c5
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px
+    height: 100%
+    border-radius: 15px
+    padding: 10px
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px
+    button
+      width: fit-content
+      height: fit-content
+      float: right
+      margin-right: 15px
+      position: relative
+      font-size: 18px
+      background: #5ebfff
+    .patient
+      width: 100%
+      font-family: 'Poppins',sans-serif
+      font-size: 18px
+      .patient-image
+        width: 20%
+      .patient-info
+        width: 80%
+        font-weight: 300
+        color: #5e5e5e
+        align-content: start
+        align-items: self-start
+        span
+          font-size: 16px
+          color: #339258
+table
+    width: 100%
+    th
+      font-family: 'Poppins',sans-serif
+      font-size: 18px
+      font-weight: 400
+    td
+      font-weight: 300
+      font-size: 16px
+      color: #339258
+
+
+button
+      width: fit-content
+      height: fit-content
+      float: right
+      position: relative
+      font-size: 18px
+      background: #5ebfff
+      border-radius: 5px

@@ -15,37 +15,38 @@ export class CentralAuthorityDashboardComponent implements OnInit {
 
   checkProgress: boolean = true;
   progressWarn:boolean = false
-  progressMsg:string = 'Checking Admin....';
+  progressMsg:string = 'Checking Central Authority....';
 
   constructor(
     private router: Router,
     private blockchainService: BlockchainService
   ) {}
 
-  ngOnInit(): void {
-    console.log("siu");
-    
+  async ngOnInit(): Promise<void> {    
     this.onCheckCentralAuthority()
-
-    //TODO
     this.router.navigate(['central-authority/central-dashboard']);
-
   }
 
-  async onCheckCentralAuthority(){
-    this.progressMsg = 'Checking Admin Access...'
+  onCheckCentralAuthority(){
+    this.progressMsg = 'Checking Central Authority Access...'
     this.progressWarn = false
     let checkAdmin = setInterval(async () => {
       let currentAccount = this.blockchainService.account;
-  
-      if(currentAccount != null && await this.blockchainService.contract.methods.isCentralAuthority().call({ from: currentAccount })){
+      let isCentral = await this.blockchainService.contract.methods.isCentralAuthority().call({ from: currentAccount });
+      
+      if(currentAccount != null && isCentral){
         this.isAdmin = true
         this.checkProgress = false
         this.progressWarn = true
         this.progressMsg = '<span class="text-danger">Only Central Authority has Access to this Page.... </span><br> '+
-        'Conncet Metamask to your Admin account'
+        'Connect Metamask to your Central Authority account'
         clearInterval(checkAdmin)
+      }
+      else{
+        clearInterval(checkAdmin)
+        this.router.navigate(['/']);
       }
     },1000)
   }
+
 }

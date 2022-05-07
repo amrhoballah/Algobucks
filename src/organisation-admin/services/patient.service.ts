@@ -34,13 +34,10 @@ export class PatientService {
       this.abi = Contract.abi;
       this.netWorkData = Contract.networks[this.netId];
 
-      console.log(this.netWorkData);
 
       if (this.netWorkData) {
         this.address = this.netWorkData.address;
         this.contract = this.web3.eth.Contract(this.abi, this.address);
-      } else {
-        console.log('Contract not Deployed');
       }
     });
   }

@@ -37,8 +37,6 @@ export class OrganisationDashboardComponent implements OnInit {
     this.progressWarn = false
     let checkAdmin = setInterval(async () => {
       let currentAccount = this.blockchainService.account;
-      console.log("ANA HENA FASHKH ")
-      console.log(await this.blockchainService.contract.methods.isOrganisation().call({from: currentAccount}));
       if(currentAccount != null && await this.blockchainService.contract.methods.isOrganisation().call({ from: currentAccount })){
         this.isAdmin = true
         this.checkProgress = false
@@ -46,6 +44,10 @@ export class OrganisationDashboardComponent implements OnInit {
         this.progressMsg = '<span class="text-danger">Only Organisation Admins have Access to this Page.... </span><br> '+
         'Conncet Metamask to your Admin account'
         clearInterval(checkAdmin)
+      }
+      else{
+        clearInterval(checkAdmin)
+        this.router.navigate(['/']);
       }
     },1000)
   }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 
 const Contract = require('../../build/contracts/Contract.json');
-const EthCrypto = require('eth-crypto');
 
 declare let window: any;
 
@@ -23,32 +22,29 @@ export class BlockchainService {
   Report: any = [];
 
   constructor() {
-    this.getWeb3Provider().then(() => {
-      this.web3.eth.getAccounts((err: any, accs: any) => {
+    this.getWeb3Provider().then(async () => {
+      await this.web3.eth.getAccounts(async (err: any, accs: any) => {
         this.account = accs[0];
-        this.web3.eth.getBalance(this.account).then((r: any) => {
+        await this.web3.eth.getBalance(this.account).then((r: any) => {
           this.balance = r;
         });
         this.web3.eth.getBlockNumber().then((block: any) => {
           this.blockNumber = block;
-          console.log(this.blockNumber);
         });
       });
 
-      this.web3.eth.net.getId().then((r: number) => {
-        console.log(r);
+      this.web3.eth.net.getId().then(async (r: number) => {
 
         this.netId = r;
         this.abi = Contract.abi;
-        this.netWorkData = Contract.networks[this.netId];
+        this.netWorkData = await Contract.networks[this.netId];
 
         if (this.netWorkData) {
           this.address = this.netWorkData.address;
-          this.contract = this.web3.eth.Contract(this.abi, this.address);
+          this.contract = await this.web3.eth.Contract(this.abi, this.address);
         }
       });
       window.ethereum.on('accountsChanged', (acc:any) => {
-        console.log(acc);
         window.location.reload();
       });
     });
@@ -70,7 +66,6 @@ export class BlockchainService {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
-      console.log(window.web3);
 
       this.web3 = window.web3;
       this.account = this.web3.eth.getAccounts()[0];
@@ -103,7 +98,16 @@ export class BlockchainService {
     return this.contract;
   }
 
-  async getCounts(){
-    return [await this.contract.methods.getOrganisationCount().call({from:this.account}),0,0];
+  async getCountsForCA(){
+    let c1 = await this.contract.methods.getAllOrganisation().call({from:this.account})
+    return [c1.length,
+      await this.contract.methods.getPractitionerCount().call({from:this.account}),
+      await this.contract.methods.getPatientCount().call({from:this.account})];
+  }
+
+  async getCountsForOrg(){
+    let c1 = await this.contract.methods.getPractitionersPerOrg().call({from:this.account})
+    let c2 = await this.contract.methods.getPatientsPerOrg().call({from:this.account})
+    return [c1.length,c2.length];
   }
 }

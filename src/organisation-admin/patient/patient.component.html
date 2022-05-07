@@ -47,16 +47,12 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label>Gender<sup class="fas fa-asterisk fw-normal text-danger" style="font-size: 8px;"></sup></label>
-                  <input [(ngModel)]="model.gender" name="gender" id="gender" type="text" class="form-control" required />
-                  <!-- <div class="form-group">
-                 <select [(ngModel)]="gender" class="form-control" required>
-                  <option></option>
-                  <option value="Gender.Male">Male</option>
-                  <option value="Gender.Female">Female</option>
-                  <option value="Gender.Other">Other</option>
-                  <option value="Gender.Unknown">Unknown</option>
-                 </select>
-                  </div> -->
+                  <select [(ngModel)]="model.gender" class="form-select form-control" id="med3" name="freq" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="unknown">Unknown</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
               </div>
               <div class="col-12">

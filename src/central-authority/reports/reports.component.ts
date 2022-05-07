@@ -24,7 +24,6 @@ export class ReportsComponent implements OnInit {
     let getBlockNumber = setInterval(() => {
       this.Transactions = this.blockchainService.blockNumber;
       if (this.Transactions != null) {
-        console.log('Blocks : ', this.Transactions);
         clearInterval(getBlockNumber);
       }
     }, 1000);
@@ -41,14 +40,12 @@ export class ReportsComponent implements OnInit {
   }
 
   checkReportComplete() {
-    console.log('Check report....');
 
     let reportProgrress = setInterval(() => {
       if (this.blockchainService.Report.length == this.noOfBlocks) {
         this.reportLoaded = true;
         this.reportToastShow = true
         this.reportProgress = false
-        console.log(this.blockchainService.Report);
         clearInterval(reportProgrress);
       }
     }, 1000);

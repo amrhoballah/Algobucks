@@ -58,28 +58,20 @@ export class ViewComponent implements OnInit {
       this.showProgressCard = false
     }
 
-    let orgCall = setInterval(() => {
-      console.log('interval');
-
+    setTimeout(() => {
       this.Organisations = this.organisationService.Organisations;
-      console.log(this.Organisations.length);
       if (this.Organisations.length >= 1) {
         this.loadOrgDetails();
         this.progressMsg = "Found "+this.Organisations.length + " Accounts"
-        clearInterval(orgCall);
       }
       else{
         this.progressMsg = 'No Organisations in the Network....'
       }
     }, 1000);
 
-    let OrgDetailsCall = setInterval(() => {
-      console.log('loading Org Details');
-      console.log('OrgDet len', this.organisationService.OrganisationDetails.length);
-      console.log('Org len', this.Organisations.length);
-
+    setTimeout(() => {
       if(this.Organisations.length <= 0){
-        clearInterval(OrgDetailsCall)
+        this.showProgressWarn = true;
       }
 
       if(this.OrganisationDetails.length > 0){
@@ -87,17 +79,18 @@ export class ViewComponent implements OnInit {
       }
 
       if (this.OrganisationDetails.length == this.Organisations.length) {
-        console.log(this.organisationService.OrganisationDetails);
         this.showProgressCard = false
         this.loadComplete = true
         this.OrganisationDetails = this.organisationService.OrganisationDetails;
-        clearInterval(OrgDetailsCall);
+        this.loaded = true
       } else {
         this.progressMsg = "Loading Organisation Details...."
-        console.log(' Organisation... fff', this.organisationService.OrganisationDetails);
         this.OrganisationDetails = this.organisationService.OrganisationDetails;
+        this.showProgressCard = false
+        this.loadComplete = true
+        this.loaded = true
       }
-    }, 5000);
+    }, 1000);
     
   }
 }

@@ -17,8 +17,7 @@ export class Patient{
         public deceasedBoolean : boolean,
         public deceasedDateTime : number,
         public multipleBirthBoolean : boolean,
-        public multipleBirthInteger : number,
-        public exists = false
+        public multipleBirthInteger : number
     ){}
 }
 

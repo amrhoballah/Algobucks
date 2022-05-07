@@ -8,9 +8,9 @@ import { BlockchainService } from 'src/services/blockchain.service';
 })
 export class DashboardHomeComponent implements OnInit {
 
-  Titles: any = ['Total Patients','In Patients','Active Doctors','Active Nurses']
-  Images: any = ['user-injured','procedures','user-md','user-nurse']
-  Count: number = 0
+  Titles: any = ['Medical Practitioners','Patients']
+  Images: any = ['user-md','user-injured']
+  Count: number[] = [];
   Background: any = ['green','orange','blue','violet']
 
   accountBalance: any;
@@ -19,15 +19,18 @@ export class DashboardHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountBalance = this.blockchainService.getBalance()
-    console.log(this.accountBalance);
 
     let getBalance = setInterval(() => {
       this.accountBalance = this.blockchainService.getBalance()
       if(this.accountBalance != null){
         this.accountBalance /= 1000000000000000000
-        console.log("Balance",this.accountBalance);
         clearInterval(getBalance);
       }
+    },1000)
+
+    let getCounts = setInterval(async() => {
+      this.Count = await this.blockchainService.getCountsForOrg()
+      clearInterval(getCounts);
     },1000)
   }
 

@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { MedicalRecord } from 'src/app/models/medicalRecord.model';
+import { Medication } from 'src/app/models/medication.model';
 
 
 type MedicationType = [
@@ -23,16 +25,18 @@ type PatientMedicalrecordType = {
   styleUrls: ['./patient-record.component.sass'],
 })
 export class PatientRecordComponent implements OnInit {
-  @Input() PatientDetails: any = [];
+  @Input() PatientDetails: any = {};
+  @Input() pastReports : any = [];
   @Output() saveRecord = new EventEmitter<any>();
 
   model: any;
+  addReport: boolean = false;
 
-  Medication: any[] = [];
+  Medication: Medication[] = [];
   ClinicalTest: any[] = [];
 
   med: any = {};
-  clinic: any = {};
+  clinic: any = "";
 
   LabFiles: any[] = []
 
@@ -41,7 +45,6 @@ export class PatientRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log();
   }
 
   onMedicinesSave() {
@@ -51,17 +54,17 @@ export class PatientRecordComponent implements OnInit {
 
   onTestSave() {
     this.ClinicalTest.push(this.clinic);
-    this.clinic = {};
+    this.clinic = "";
   }
 
   onPatientRecordSubmit() {
-    this.model.medication = this.Medication;
-    this.model.tests = this.ClinicalTest;
-    this.model.files = this.LabFiles
-
-    console.log(this.model);
+    this.model.treatment = this.Medication;
+    this.model.clinicalTests = this.ClinicalTest;
 
     this.saveRecord.emit(this.model)
+    this.model = {};
+    this.Medication = [];
+    this.ClinicalTest = [];
     
   }
 
@@ -74,4 +77,22 @@ export class PatientRecordComponent implements OnInit {
       reader.readAsDataURL(files.target.files[i]);
     }
   }
+
+  getStringDate(date : number):string{
+    return new Date(date*1).toDateString();
+  }
+
+  getStringGender(data : any):string{
+    switch(data){
+      case 0: return "Male"
+      case 1: return "Female"
+      case 2: return "Unknown"
+      default: return "Other"
+    }
+  }
+
+  onAddReport(){
+    this.addReport = !this.addReport;
+  }
+  panelOpenState: boolean = false;
 }

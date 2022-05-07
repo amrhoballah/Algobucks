@@ -31,13 +31,11 @@ export class PatientComponent implements OnInit {
   onSubmit() {
     this.show = true
     this.msg_text = "Adding Patient to the Network..."
-    console.log(this.model);
     this.checkAddProgress()
     this.patientService.addPatient(this.model.patID, this.model);
   }
 
   checkAddProgress(){
-    console.log("Checking progress");
     
     let checkProgress = setInterval(() => {
       if(this.patientService.added){

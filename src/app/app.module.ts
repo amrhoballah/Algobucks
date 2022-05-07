@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -37,7 +38,7 @@ import { BrowserModule } from '@angular/platform-browser';
     BrowserModule,
     AppRoutingModule,
     // ReactiveFormsModule,
-    // MatTabsModule,
+    MatTabsModule,
     // MatIconModule,
     BrowserAnimationsModule,
     // MatInputModule,
@@ -45,8 +46,9 @@ import { BrowserModule } from '@angular/platform-browser';
     // MatFormFieldModule,
     // MatSelectModule,
     // MatListModule,
-    // MatCardModule,
-    // MatButtonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDatepickerModule
     // MatDividerModule,
     // MatGridListModule,
     // FormsModule,

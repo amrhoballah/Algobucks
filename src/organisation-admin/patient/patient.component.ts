@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxImageCompressService } from 'ngx-image-compress';
 import { Communication } from 'src/app/models/communication.model';
 import { ContactPoint } from 'src/app/models/contactPoint.model';
 import { HumanName, Gender } from 'src/app/models/humanName.model';
 import { Patient } from 'src/app/models/patient.model';
 import { PhysicalAddress } from 'src/app/models/physicalAddress.model';
-import { Practitioner } from 'src/app/models/practitioner.model';
 import { PatientService } from '../services/patient.service';
 
 @Component({
@@ -14,12 +12,12 @@ import { PatientService } from '../services/patient.service';
   styleUrls: ['./patient.component.sass'],
 })
 export class PatientComponent implements OnInit {
-  name : HumanName = {
+  name : any = {
     givenNames: '',
     surname: ''
   };
 
-  address : PhysicalAddress = {
+  address : any = {
     use: 'home',
     street: '',
     city: '',
@@ -28,12 +26,12 @@ export class PatientComponent implements OnInit {
     country: ''
   }
 
-  communication : Communication = {
+  communication : any = {
     languages: [],
     preferred: ''
   }
 
-  telecom : ContactPoint = {
+  telecom : any = {
     phoneNumber: '',
     email: ''
   }
@@ -67,7 +65,7 @@ export class PatientComponent implements OnInit {
 
   async onAddPatSubmit() {
     this.show = true;
-    this.msg_text = 'Adding Practitioner to the Network....';
+    this.msg_text = 'Adding Patient to the Network....';
     this.warn = false;
     switch(this.model.gender.toLowerCase()){
       case "male" : this.gender = Gender.MALE; break;
@@ -85,17 +83,18 @@ export class PatientComponent implements OnInit {
         .addPatient(pat)
         .send({ from: this.patientService.account })
         .on("confirmation",(result: any) => {
-          console.log('result', result);
           if (result) {
             this.msg_text += '<br>Patient Added to the Blockchain';
-            console.log('Patient added Successfully');
             this.success = true
             this.model = {};
+            this.telecom = {};
+            this.address = {};
+            this.communication = {};
+            this.name = {};
             return result;
           } else {
             this.warn = !this.warn;
             this.msg_text = this.patientService.msg_text;
-            console.log(result);
             return result;
           }
         })
@@ -105,12 +104,12 @@ export class PatientComponent implements OnInit {
             'Adding Patient Failed<br> <small class="fw-light text-danger"><b>"</b>' +
             this.model.id +
             '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
-          console.log(err);
           return err;
         });
       }
       else{
-        console.log("Not a valid practitioner");
+        this.msg_text =
+        'Not a valid practitioner<br> <small class="fw-light text-danger"><b>"</b>'
       }
   }
 

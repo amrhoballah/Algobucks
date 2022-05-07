@@ -22,10 +22,6 @@ export class ViewRecordComponent implements OnInit {
   constructor(private doctorService: DoctorService) {}
 
   ngOnInit(): void {
-    //FIXME
-    // let data = localStorage.getItem("PatRecord")
-    // this.PatientRecords = JSON.parse(data!) || {}
-    // console.log(this.PatientRecords);
     this.PatientRecords = {}
   }
 
@@ -34,18 +30,15 @@ export class ViewRecordComponent implements OnInit {
     this.doctorService
       .getPatientRecords(this.model.patID)
       .then((result: any) => {
-        console.log(result);
         this.record = true;
         this.progressSuccess = true;
         this.PatientRecords = result['MedRecord'];
-        // localStorage.setItem("PatRecord", JSON.stringify(this.PatientRecords));
         this.progressMsg =
           '<span class="text-danger fw-bold">' +
           this.PatientRecords.length +
           ' </span> Record Found';
       })
       .catch((err: any) => {
-        console.log(err);
         this.progressWarn = true;
         this.progressMsg =
           'Not Found a Record for Patient with <br> <span class="text-danger">' +
@@ -62,7 +55,6 @@ export class ViewRecordComponent implements OnInit {
 
   onViewRecord(record:any){
     this.PatientRecord = record
-    console.log(this.PatientRecord.data);
     this.viewRecord = true
   }
 

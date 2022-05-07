@@ -42,7 +42,6 @@ export class OrganisationService {
       this.abi = Contract.abi;
       this.netWorkData = Contract.networks[this.netId];
 
-      console.log(this.netWorkData);
 
       if (this.netWorkData) {
         this.address = this.netWorkData.address;
@@ -53,16 +52,12 @@ export class OrganisationService {
            .then((orgs: string[]) => {
              this.Organisations = orgs;
            });
-        console.log('Organisations', this.Organisations);
-      } else {
-        console.log('Contract not Deployed');
       }
     });
 
   }
 
   async getOrgDetails(orgID: any): Promise<any> {
-    console.log('Organisation ID', orgID);
     return await this.contract.methods
       .getOrganisation(orgID)
       .call()

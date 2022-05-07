@@ -2,13 +2,13 @@
   <div class="container w-100">
     <div class="content" *ngIf="this.OrganisationDetails.length >= 1">
       <div class="card mt-2" *ngFor="let Docdetails of this.OrganisationDetails ">
-        <div class="doctor w-100 p-2 d-flex flex-row align-items-center">
-          <div class="doc-image">
+        <div class="organisation w-100 p-2 d-flex flex-row align-items-center">
+          <div class="org-image">
             <img class="border border-1 border-secondary rounded-circle p-1"
               [src]=' "../../../assets/images/hospital.png"' alt="Doctor Image" width="150px"
               height="150px">
           </div>
-          <div class="doc-info d-flex flex-column">
+          <div class="org-info d-flex flex-column">
             <div class="col">
               <div class="row py-2">
                 <div class="col-md-12">
@@ -18,9 +18,9 @@
               <div class="row-md-12 d-flex flex-row justify-content-between">
                 <div class="col-md-12 d-flex flex-column">
                   <div>
-                    <b>Organisation Name : </b> <span class="fName">{{Docdetails[1]}}</span></div>
+                    <b>Organisation Name: </b> <span class="fName">{{Docdetails[1]}}</span></div>
                   <div>
-                    <b>Date of Joining : </b> <span class="Doj">{{Docdetails[2].toDateString()}}</span>
+                    <b>Date of Joining: </b> <span class="Doj">{{Docdetails[2].toDateString()}}</span>
                   </div>
                   <div>
                     <b>Street: </b><span class="speciality">{{Docdetails[3][1]}}</span>
@@ -29,12 +29,12 @@
                 </div>
                 <div class="col-md-12 d-flex flex-column">
                   <div>
-                    <b>City : </b><span class="emailID">{{Docdetails[3][2]}}</span></div>
+                    <b>City: </b><span class="emailID">{{Docdetails[3][2]}}</span></div>
                   <div>
                     <b>State: </b><span class="phone">{{Docdetails[3][3]}}</span>
                   </div>
                   <div>
-                    <b>Country </b><span class="city">{{Docdetails[3][5]}}</span>
+                    <b>Country: </b><span class="city">{{Docdetails[3][5]}}</span>
                   </div>
                   <div>
                     <b>Postcode: </b><span class="state">{{Docdetails[3][4]}}</span>

@@ -42,7 +42,6 @@ export class AddComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // ethereum.on('message', (message: string) => console.log(message));
   }
 
   onAddOrgSubmit() {
@@ -61,17 +60,14 @@ export class AddComponent implements OnInit {
         .addOrganisation(org)
         .send({ from: this.organisationService.account })
         .on("confirmation",(result: any) => {
-          console.log('result', result);
           if (result) {
             this.msg_text += '<br>Organisation Added to the Blockchain';
-            console.log('Organisation added Successfully');
             this.success = true
             this.model = {};
             return result;
           } else {
             this.warn = !this.warn;
             this.msg_text = this.organisationService.msg_text;
-            console.log(result);
             return result;
           }
         })
@@ -81,7 +77,6 @@ export class AddComponent implements OnInit {
             'Adding Organisation Failed<br> <small class="fw-light text-danger"><b>"</b>' +
             this.model.publicID +
             '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
-          console.log(err);
           return err;
         });
   }
@@ -105,7 +100,6 @@ export class AddComponent implements OnInit {
         this.image_url = this.imageCompressedUrl;
       })
       .catch((er) => {
-        console.log(er);
       });
   }
 
