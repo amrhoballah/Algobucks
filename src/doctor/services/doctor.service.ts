@@ -27,7 +27,7 @@ export class DoctorService {
 
   constructor(private blockchainService: BlockchainService) {
     this.web3 = this.blockchainService.getWeb3();
-    this.contract = this.blockchainService.getContract();
+    this.contract = this.blockchainService.getDrContract();
     this.account = this.blockchainService.getAccount();
   }
 
@@ -36,7 +36,7 @@ export class DoctorService {
   }
 
   async checkisDr() {
-    this.contract = this.blockchainService.contract;
+    this.contract = this.blockchainService.getDrContract();
 
     this.account = this.blockchainService.account;
 
@@ -54,9 +54,12 @@ export class DoctorService {
 
   async getDoctor(): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.contract.methods
+      console.log(await this.blockchainService.getAccount());
+      console.log(await this.blockchainService.getDrContract());
+      
+      await this.blockchainService.getDrContract().methods
         .getDr(await this.blockchainService.getAccount())
-        .call()
+        .call({from: await this.blockchainService.getAccount()})
         .then((result: any) => {
           resolve(toPractitioner(result));
           // await this.ipfs.cat(result).then((data: any) => {
@@ -72,7 +75,7 @@ export class DoctorService {
   async checkIsPatient(id: string): Promise<any> {
     this.patientId = id;
     return new Promise(async (resolve, reject) => {
-      this.blockchainService.contract.methods
+      this.blockchainService.getPatContract().methods
         .isPatient(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -86,7 +89,7 @@ export class DoctorService {
 
   async getPatientDetails(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.blockchainService.contract.methods
+      this.blockchainService.getPatContract().methods
         .getPatInfo(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -100,9 +103,11 @@ export class DoctorService {
 
   async getPatientRecords(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.blockchainService.contract.methods
+      console.log("anzel");
+      
+      this.blockchainService.getPatContract().methods
         .viewMedicalRecord(id)
-        .call({ from: await this.getAccount() })
+        .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
           resolve(result);
         })
@@ -114,9 +119,9 @@ export class DoctorService {
 
   async savePatientMedRecord(data: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.contract.methods
+      this.blockchainService.getPatContract().methods
         .addMedicalRecord(data)
-        .send({ from: await this.getAccount() })
+        .send({ from: await this.blockchainService.getAccount() })
         .on("confirmation", (result: any) => {
           resolve(result);
         })

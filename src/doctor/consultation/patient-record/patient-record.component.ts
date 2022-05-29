@@ -48,6 +48,8 @@ export class PatientRecordComponent implements OnInit {
   }
 
   onMedicinesSave() {
+    if(this.med.remarks==undefined)
+      this.med.remarks = "";
     this.Medication.push(this.med);
     this.med = {};
   }

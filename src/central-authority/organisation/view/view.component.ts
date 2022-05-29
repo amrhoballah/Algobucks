@@ -62,6 +62,8 @@ export class ViewComponent implements OnInit {
       this.Organisations = this.organisationService.Organisations;
       if (this.Organisations.length >= 1) {
         this.loadOrgDetails();
+        console.log("All Orgs ", this.OrganisationDetails);
+        
         this.progressMsg = "Found "+this.Organisations.length + " Accounts"
       }
       else{

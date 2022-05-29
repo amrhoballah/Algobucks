@@ -77,7 +77,7 @@ export class PatientComponent implements OnInit {
     let dob = new Date( myDate[0], myDate[1] - 1, myDate[2]);
 
     let pat = new Patient(this.model.id,this.name,this.telecom,this.address,dob.getTime(),this.model.generalPractitioner,this.patientService.account,this.communication,this.gender,false,0,this.model.multipleBirthBoolean,this.model.multipleBirthInteger);
-    let res = await this.patientService.contract.methods.isPractitioner(this.model.generalPractitioner).call()
+    let res = await this.patientService.drContract.methods.isPractitioner(this.model.generalPractitioner).call()
     if(res == 1){
     this.patientService.contract.methods
         .addPatient(pat)

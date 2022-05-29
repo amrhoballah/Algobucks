@@ -38,7 +38,7 @@ export class ViewAllDoctorsComponent implements OnInit {
 
   async ngOnInit() {  
     setTimeout(async () => {
-      this.Doctors = await this.doctorsService.contract.methods.getPractitionersPerOrg().call({from: this.doctorsService.account}).then((res: any[]) => {
+      this.Doctors = await this.doctorsService.drContract.methods.getPractitionersPerOrg().call({from: this.doctorsService.account}).then((res: any[]) => {
         console.log(res);
         
         let result = [];

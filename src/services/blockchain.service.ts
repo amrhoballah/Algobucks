@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 
 const Contract = require('../../build/contracts/Contract.json');
+const PatientContract = require('../../build/contracts/PatientContract.json');
+const PractitionerContract = require('../../build/contracts/PractitionerContract.json');
+const OrganisationContract = require('../../build/contracts/OrganisationContract.json');
+
 
 declare let window: any;
 
@@ -14,6 +18,9 @@ export class BlockchainService {
   web3: any;
   address: any;
   contract: any;
+  orgContract: any;
+  patContract: any;
+  drContract: any;
   netWorkData: any;
   abi: any;
   balance: any;
@@ -42,6 +49,30 @@ export class BlockchainService {
         if (this.netWorkData) {
           this.address = this.netWorkData.address;
           this.contract = await this.web3.eth.Contract(this.abi, this.address);
+        }
+
+        this.abi = PatientContract.abi;
+        this.netWorkData = await PatientContract.networks[this.netId];
+
+        if (this.netWorkData) {
+          this.address = this.netWorkData.address;
+          this.patContract = await this.web3.eth.Contract(this.abi, this.address);
+        }
+
+        this.abi = PractitionerContract.abi;
+        this.netWorkData = await PractitionerContract.networks[this.netId];
+
+        if (this.netWorkData) {
+          this.address = this.netWorkData.address;
+          this.drContract = await this.web3.eth.Contract(this.abi, this.address);
+        }
+
+        this.abi = OrganisationContract.abi;
+        this.netWorkData = await OrganisationContract.networks[this.netId];
+
+        if (this.netWorkData) {
+          this.address = this.netWorkData.address;
+          this.orgContract = await this.web3.eth.Contract(this.abi, this.address);
         }
       });
       window.ethereum.on('accountsChanged', (acc:any) => {
@@ -98,16 +129,28 @@ export class BlockchainService {
     return this.contract;
   }
 
+  getPatContract() {
+    return this.patContract;
+  }
+
+  getDrContract() {
+    return this.drContract;
+  }
+
+  getOrgContract() {  
+    return this.orgContract;
+  }
+
   async getCountsForCA(){
-    let c1 = await this.contract.methods.getAllOrganisation().call({from:this.account})
+    let c1 = await this.orgContract.methods.getAllOrganisation().call({from:this.account})
     return [c1.length,
-      await this.contract.methods.getPractitionerCount().call({from:this.account}),
-      await this.contract.methods.getPatientCount().call({from:this.account})];
+      await this.drContract.methods.getPractitionerCount().call({from:this.account}),
+      await this.patContract.methods.getPatientCount().call({from:this.account})];
   }
 
   async getCountsForOrg(){
-    let c1 = await this.contract.methods.getPractitionersPerOrg().call({from:this.account})
-    let c2 = await this.contract.methods.getPatientsPerOrg().call({from:this.account})
+    let c1 = await this.drContract.methods.getPractitionersPerOrg().call({from:this.account})
+    let c2 = await this.patContract.methods.getPatientsPerOrg().call({from:this.account})
     return [c1.length,c2.length];
   }
 }

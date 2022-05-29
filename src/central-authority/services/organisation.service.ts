@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BlockchainService } from 'src/services/blockchain.service';
 
-const Contract = require('../../../build/contracts/Contract.json');
+const Contract = require('../../../build/contracts/OrganisationContract.json');
 
 @Injectable({
   providedIn: 'root',

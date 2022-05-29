@@ -1,7 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.8.11;
 
-contract Contract{
+contract MainContract{
+
+    MainContract internal parentContract;
+
+    mapping (address => bool) private authorisedContracts;
+
+    function authoriseContract(address newC) public {
+        require(has(centralAuthority, msg.sender),"Not Authorised");
+        authorisedContracts[newC] = true;
+    }
 
     struct Role {
         mapping (address => bool) bearer;
@@ -27,27 +36,66 @@ contract Contract{
     Role private practitioner;
     Role private patient;
 
-     /*
-        Modifiers
-    */
-
+    modifier onlyAuthorisedContracts {
+        require(authorisedContracts[msg.sender],"Not Authorised");
+        _;
+    }
     modifier onlyCentralAuthority(){
-        require(has(centralAuthority,msg.sender), 'Not Central Authority');
+        require(parentContract.onlyCentralAuthorityE(msg.sender), 'Not Organisation Admin');
         _;
     }
     modifier onlyOrganisationAdmin(){
-        require(has(organisationAdmin,msg.sender), 'Not Organisation Admin');
+        require(parentContract.onlyOrganisationAdminE(msg.sender), 'Not Organisation Admin');
         _;
     }
     modifier onlyPractitioner(){
-        require(has(practitioner,msg.sender), 'Not Practitioner');
+        require(parentContract.onlyPractitionerE(msg.sender), 'Not Practitioner');
         _;
     }
     modifier onlyPatient(){
-        require(has(patient,msg.sender), 'Not Patient');
+        require(parentContract.onlyPatientE(msg.sender), 'Not Patient');
         _;
     }
-    
+
+    function onlyCentralAuthorityE(address sender) external onlyAuthorisedContracts view returns (bool){
+        if(has(centralAuthority,sender)){
+            return true;
+        }
+        return false;
+    }
+    function onlyOrganisationAdminE(address sender) external onlyAuthorisedContracts view returns (bool){
+        if(has(organisationAdmin,sender)){
+            return true;
+        }
+        return false;
+    }
+    function onlyPractitionerE(address sender) external onlyAuthorisedContracts view returns (bool){
+        if(has(practitioner,sender)){
+            return true;
+        }
+        return false;
+    }
+    function onlyPatientE(address sender) external onlyAuthorisedContracts view returns (bool){
+        if(has(patient,sender)){
+            return true;
+        }
+        return false;
+    }
+
+    function addRole(uint role, address account) external onlyAuthorisedContracts {
+        if(role == 0){
+            add(centralAuthority, account);
+        }
+        else if(role == 1){
+            add(organisationAdmin, account);
+        }
+        else if(role == 2){
+            add(practitioner, account);
+        }
+        else if(role == 3){
+            add(patient, account);
+        }
+    }
     /*
         General Information
     */
@@ -77,15 +125,71 @@ contract Contract{
 
     enum Gender{ MALE, FEMALE, OTHER, UNKNOWN }
 
+    address centralAuthorityID;
+
+    constructor() {
+        centralAuthorityID = msg.sender;
+        add(centralAuthority,centralAuthorityID);
+    }
+
+    function getCentralAuthority() external view returns(address){
+        return centralAuthorityID;
+    }
+  
+    function isCentralAuthority() external view returns(bool){
+        return has(centralAuthority,tx.origin);
+    }
+
+}
+
+contract OrganisationContract is MainContract{
+
+    constructor(address _C) {
+        parentContract = MainContract(_C);
+    }
+
     struct Organisation{
         address id;
         string name;
         uint dateJoined;
         PhysicalAddress organisationAddress;
     }
-    /*
-        Practitioner
-    */
+   
+    mapping(address => Organisation) Organisations;
+    address[] public OrganisationList;
+
+    function addOrganisation(Organisation memory data) external onlyCentralAuthority{
+        require(parentContract.onlyCentralAuthorityE(msg.sender), "Only for Admins");
+
+        Organisation storage organisationData = Organisations[data.id];
+        organisationData.id = data.id;
+        organisationData.name = data.name;
+        organisationData.dateJoined = data.dateJoined;
+        organisationData.organisationAddress = data.organisationAddress;
+
+        OrganisationList.push(data.id);
+        parentContract.addRole(1,data.id);
+    }
+
+    function getOrganisation(address id) public view returns(Organisation memory){
+        return Organisations[id];
+    }
+
+    function getAllOrganisation() external onlyCentralAuthority view returns(address[] memory){
+        return OrganisationList;
+    }
+
+    function isOrganisation() external view returns(bool){
+        return parentContract.onlyOrganisationAdminE(msg.sender);
+    }
+}
+
+contract PractitionerContract is MainContract{
+
+    constructor(address _C) {
+        parentContract = MainContract(_C);
+    }
+
     struct Practitioner{
         address id;
         HumanName name;
@@ -96,9 +200,64 @@ contract Contract{
         Communication communication;
         address memberOrgaisation;
     }
-    /*
-        Patient
-    */
+
+    mapping(address => Practitioner) Practitioners;
+    address[] public PractitionerList;
+
+    function addPractitioner(Practitioner memory data) external onlyOrganisationAdmin{
+        Practitioner storage practitionerData = Practitioners[data.id];
+        practitionerData.id = data.id;
+        practitionerData.name = data.name;
+        practitionerData.telecom = data.telecom;
+        practitionerData.birthDate = data.birthDate;
+        practitionerData.gender = data.gender;
+        practitionerData.homeAddress = data.homeAddress;
+        practitionerData.communication = data.communication;
+        practitionerData.memberOrgaisation = data.memberOrgaisation;
+
+        PractitionerList.push(data.id);
+        parentContract.addRole(2,data.id);
+    }
+
+    function getDr(address _id) external view returns(Practitioner memory){
+        if(parentContract.onlyPractitionerE(msg.sender) || parentContract.onlyOrganisationAdminE(msg.sender) || parentContract.onlyPatientE(msg.sender)){
+            return Practitioners[_id];
+        }
+        else{
+            revert("Not Authorised");
+        }
+    }
+
+    function isPractitioner(address id) external view returns(int){
+        if(parentContract.onlyPractitionerE(id)){
+            return 1;
+        }
+        return 0;
+    }
+
+    function getPractitionerCount() external onlyCentralAuthority view returns(uint) {
+        return(PractitionerList.length);
+    }
+
+    function getPractitionersPerOrg() external onlyOrganisationAdmin view returns(Practitioner[] memory){
+        uint count = 0;
+        Practitioner[] memory practitionerList = new Practitioner[](PractitionerList.length);
+        for(uint i=0;i<PractitionerList.length;i++){
+            Practitioner storage pracData = Practitioners[PractitionerList[i]];
+            if(pracData.memberOrgaisation == msg.sender){
+                practitionerList[count++] = pracData;
+            }
+        }
+        return(practitionerList);
+    }
+}
+
+contract PatientContract is MainContract{
+
+    constructor(address _C) {
+        parentContract = MainContract(_C);
+    }
+
     struct Patient{
         address id;
         HumanName name;
@@ -131,102 +290,17 @@ contract Contract{
     }
     // End of Medical Records
 
-    mapping(address => Organisation) Organisations;
-    mapping(address => Practitioner) Practitioners;
+    // mapping(address => Organisation) Organisations;
+    // mapping(address => Practitioner) Practitioners;
     mapping(address => Patient) Patients;
     mapping(address => MedicalRecord[]) Records;
 
-    address[] public OrganisationList;
-    address[] public PractitionerList;
+    // address[] public OrganisationList;
+    // address[] public PractitionerList;
     address[] public PatientList;
-
-    address centralAuthorityID;
-
-    constructor() {
-        centralAuthorityID = msg.sender;
-        add(centralAuthority,centralAuthorityID);
-    }
-
-    //get Admin
-
-    function getCentralAuthority() external view returns(address){
-        return centralAuthorityID;
-    }
-  
-    function isCentralAuthority() external view returns(bool){
-        return has(centralAuthority,tx.origin);
-    }
-
-    function addOrganisation(Organisation memory data) external onlyCentralAuthority{
-        require(has(centralAuthority,msg.sender) == true, "Only for Admins");
-
-        Organisation storage organisationData = Organisations[data.id];
-        organisationData.id = data.id;
-        organisationData.name = data.name;
-        organisationData.dateJoined = data.dateJoined;
-        organisationData.organisationAddress = data.organisationAddress;
-
-        OrganisationList.push(data.id);
-        add(organisationAdmin,data.id);
-    }
-
-    function getOrganisation(address id) public view returns(Organisation memory){
-        return Organisations[id];
-    }
-
-    function getAllOrganisation() external onlyCentralAuthority view returns(address[] memory){
-        return OrganisationList;
-    }
-
-    function isOrganisation() external view returns(bool){
-        return has(organisationAdmin,msg.sender);
-    }
-
-    function addPractitioner(Practitioner memory data) external onlyOrganisationAdmin{
-        Practitioner storage practitionerData = Practitioners[data.id];
-        practitionerData.id = data.id;
-        practitionerData.name = data.name;
-        practitionerData.telecom = data.telecom;
-        practitionerData.birthDate = data.birthDate;
-        practitionerData.gender = data.gender;
-        practitionerData.homeAddress = data.homeAddress;
-        practitionerData.communication = data.communication;
-        practitionerData.memberOrgaisation = data.memberOrgaisation;
-
-        PractitionerList.push(data.id);
-        add(practitioner,data.id);
-    }
-
-    function getDr(address _id) external view returns(Practitioner memory){
-        require(has(practitioner,msg.sender)|| has(organisationAdmin,msg.sender) || has(patient,msg.sender), "Not Allowed");
-        return (Practitioners[_id]);
-    }
-
-    function isPractitioner(address id) external view returns(int){
-        if(has(practitioner,id)){
-            return 1;
-        }
-        return 0;
-    }
-
-    function getPractitionerCount() external onlyCentralAuthority view returns(uint) {
-        return(PractitionerList.length);
-    }
 
     function getPatientCount() external onlyCentralAuthority view returns(uint){
         return(PatientList.length);
-    }
-
-    function getPractitionersPerOrg() external onlyOrganisationAdmin view returns(Practitioner[] memory){
-        uint count = 0;
-        Practitioner[] memory practitionerList = new Practitioner[](PractitionerList.length);
-        for(uint i=0;i<PractitionerList.length;i++){
-            Practitioner storage pracData = Practitioners[PractitionerList[i]];
-            if(pracData.memberOrgaisation == msg.sender){
-                practitionerList[count++] = pracData;
-            }
-        }
-        return(practitionerList);
     }
 
     function getPatientsPerDoc() external onlyPractitioner view returns(Patient[] memory){
@@ -257,19 +331,19 @@ contract Contract{
             Patient
     */
     function isPatient(address id) external view returns(int){
-       if(has(patient,id)){
+       if(parentContract.onlyPatientE(id)){
            return 1;
         }
         return 0;
     }
 
     function getPatInfo(address iD) external view returns(Patient memory){
-        require(has(patient,msg.sender) || has(practitioner,msg.sender), "Not allowed");
+        require((parentContract.onlyPatientE(msg.sender) && iD==msg.sender) || parentContract.onlyPractitionerE(msg.sender), "Not allowed");
         return (Patients[iD]);
     }
 
     function addPatient(Patient memory data ) external onlyOrganisationAdmin{
-        require(has(organisationAdmin,msg.sender) && has(practitioner,data.generalPractitioner), 'Invalid Data');
+        require(parentContract.onlyOrganisationAdminE(msg.sender) && parentContract.onlyPractitionerE(data.generalPractitioner), 'Invalid Data');
         Patient storage patientData = Patients[data.id];
         patientData.id = data.id;
         patientData.name = data.name;
@@ -286,7 +360,7 @@ contract Contract{
         patientData.managingOrganisation = msg.sender;
 
         PatientList.push(data.id);
-        add(patient,data.id);
+        parentContract.addRole(3,data.id);
     }
 
     /*
@@ -297,7 +371,7 @@ contract Contract{
         MedicalRecord memory recordData;
         recordData.patientId = data.patientId;
         recordData.practitionerId = msg.sender;
-        recordData.organisationId = Practitioners[msg.sender].memberOrgaisation;
+        recordData.organisationId = data.organisationId;
         recordData.timestamp = data.timestamp;
         recordData.diagnosis = data.diagnosis;
         recordData.medicationName = data.medicationName;
@@ -317,4 +391,3 @@ contract Contract{
         return (Records[msg.sender]);
     }
 }
-

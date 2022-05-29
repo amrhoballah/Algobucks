@@ -5,7 +5,7 @@ import { from, Observable } from 'rxjs';
 import { BlockchainService } from 'src/services/blockchain.service';
 import Web3 from 'web3';
 
-const Contract = require('../../../build/contracts/Contract.json');
+const Contract = require('../../../build/contracts/PractitionerContract.json');
 
 @Injectable({
   providedIn: 'root',

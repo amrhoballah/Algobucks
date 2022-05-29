@@ -37,7 +37,7 @@ export class ViewAllPatientsComponent implements OnInit {
   }
 
   async ngOnInit() {    
-    this.Patients = await this.patientsService.contract.methods.getPatientsPerDoc().call({from: this.patientsService.account}).then((res: any[]) => {
+    this.Patients = await this.patientsService.patContract.methods.getPatientsPerDoc().call({from: this.patientsService.account}).then((res: any[]) => {
       let result = [];
       for (let i = 0; i < res.length; i++) {
         result.push(toPatient(res[i]))

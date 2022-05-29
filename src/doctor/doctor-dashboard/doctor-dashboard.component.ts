@@ -30,7 +30,7 @@ export class DoctorDashboardComponent implements OnInit {
     let checkDr = setTimeout(async () => {
       let currentAccount = this.blockchainService.account;
       try{      
-      if(currentAccount != null && await this.blockchainService.contract.methods.isPractitioner(currentAccount).call()==1){
+      if(currentAccount != null && await this.blockchainService.drContract.methods.isPractitioner(currentAccount).call()==1){
         this.isDoctor = true
         this.checkProgress = false
         this.progressWarn = true
