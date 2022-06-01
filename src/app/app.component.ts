@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BlockchainService } from 'src/services/blockchain.service';
 import Web3 from 'web3';
 
-declare let window: any;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
