@@ -7,23 +7,23 @@
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
-  "sourceMap": "60:1854:2:-:0;;;;;;;;;;;;;;;;;;;",
-  "deployedSourceMap": "60:1854:2:-:0;;;;;",
+  "sourceMap": "60:1854:1:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "60:1854:1:-:0;;;;;",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >= 0.8.11;\n\ncontract Misc{\n    enum PatientContactRelationship {GUARDIAN, PARTNER, FRIEND, FAMILY, CAREGIVER}\n\n    // struct Contact{\n    //     PatientContactRelationship relationship;\n    //     HumanName name;\n    //     ContactPoint telecom;\n    //     PhysicalAddress homeAddress;\n    //     Gender gender;\n    // }\n\n    // function getPatientCountPerDoc() public onlyPractitioner view returns(uint){\n    //     uint count = 0;\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.generalPractitioner == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     return(count);\n    // }\n\n     // function getCountPerOrg() external onlyOrganisationAdmin view returns(string memory){\n    //     uint count = 0;\n    //     uint count1 = 0;\n    //     for(uint i=0;i<PractitionerList.length;i++){\n    //         Practitioner storage practitionerData = Practitioners[PractitionerList[i]];\n    //         if(practitionerData.memberOrgaisation == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.managingOrganisation == msg.sender){\n    //             count1++;\n    //         }\n    //     }\n    //     return string(abi.encodePacked(count, \":\", count1));\n    // }\n    \n\n    // function getPatientCountPerOrg() external onlyOrganisationAdmin view returns(uint){\n    //     uint count = 0;\n    //     for(uint i=0;i<PatientList.length;i++){\n    //         Patient storage patientData = Patients[PatientList[i]];\n    //         if(patientData.managingOrganisation == msg.sender){\n    //             count++;\n    //         }\n    //     }\n    //     return(count);\n    // }\n}\n",
   "sourcePath": "/Users/amrhoballah/Documents/GitHub/Algobucks/contracts/Misc.sol",
   "ast": {
     "absolutePath": "project:/contracts/Misc.sol",
     "exportedSymbols": {
       "Misc": [
-        1173
+        1357
       ]
     },
-    "id": 1174,
+    "id": 1358,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1166,
+        "id": 1350,
         "literals": [
           "solidity",
           ">=",
@@ -31,7 +31,7 @@
           ".11"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:26:2"
+        "src": "32:26:1"
       },
       {
         "abstract": false,
@@ -40,80 +40,80 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 1173,
+        "id": 1357,
         "linearizedBaseContracts": [
-          1173
+          1357
         ],
         "name": "Misc",
-        "nameLocation": "69:4:2",
+        "nameLocation": "69:4:1",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Misc.PatientContactRelationship",
-            "id": 1172,
+            "id": 1356,
             "members": [
               {
-                "id": 1167,
+                "id": 1351,
                 "name": "GUARDIAN",
-                "nameLocation": "112:8:2",
+                "nameLocation": "112:8:1",
                 "nodeType": "EnumValue",
-                "src": "112:8:2"
+                "src": "112:8:1"
               },
               {
-                "id": 1168,
+                "id": 1352,
                 "name": "PARTNER",
-                "nameLocation": "122:7:2",
+                "nameLocation": "122:7:1",
                 "nodeType": "EnumValue",
-                "src": "122:7:2"
+                "src": "122:7:1"
               },
               {
-                "id": 1169,
+                "id": 1353,
                 "name": "FRIEND",
-                "nameLocation": "131:6:2",
+                "nameLocation": "131:6:1",
                 "nodeType": "EnumValue",
-                "src": "131:6:2"
+                "src": "131:6:1"
               },
               {
-                "id": 1170,
+                "id": 1354,
                 "name": "FAMILY",
-                "nameLocation": "139:6:2",
+                "nameLocation": "139:6:1",
                 "nodeType": "EnumValue",
-                "src": "139:6:2"
+                "src": "139:6:1"
               },
               {
-                "id": 1171,
+                "id": 1355,
                 "name": "CAREGIVER",
-                "nameLocation": "147:9:2",
+                "nameLocation": "147:9:1",
                 "nodeType": "EnumValue",
-                "src": "147:9:2"
+                "src": "147:9:1"
               }
             ],
             "name": "PatientContactRelationship",
-            "nameLocation": "84:26:2",
+            "nameLocation": "84:26:1",
             "nodeType": "EnumDefinition",
-            "src": "79:78:2"
+            "src": "79:78:1"
           }
         ],
-        "scope": 1174,
-        "src": "60:1854:2",
+        "scope": 1358,
+        "src": "60:1854:1",
         "usedErrors": []
       }
     ],
-    "src": "32:1883:2"
+    "src": "32:1883:1"
   },
   "legacyAST": {
     "absolutePath": "project:/contracts/Misc.sol",
     "exportedSymbols": {
       "Misc": [
-        1173
+        1357
       ]
     },
-    "id": 1174,
+    "id": 1358,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1166,
+        "id": 1350,
         "literals": [
           "solidity",
           ">=",
@@ -121,7 +121,7 @@
           ".11"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:26:2"
+        "src": "32:26:1"
       },
       {
         "abstract": false,
@@ -130,66 +130,66 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 1173,
+        "id": 1357,
         "linearizedBaseContracts": [
-          1173
+          1357
         ],
         "name": "Misc",
-        "nameLocation": "69:4:2",
+        "nameLocation": "69:4:1",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Misc.PatientContactRelationship",
-            "id": 1172,
+            "id": 1356,
             "members": [
               {
-                "id": 1167,
+                "id": 1351,
                 "name": "GUARDIAN",
-                "nameLocation": "112:8:2",
+                "nameLocation": "112:8:1",
                 "nodeType": "EnumValue",
-                "src": "112:8:2"
+                "src": "112:8:1"
               },
               {
-                "id": 1168,
+                "id": 1352,
                 "name": "PARTNER",
-                "nameLocation": "122:7:2",
+                "nameLocation": "122:7:1",
                 "nodeType": "EnumValue",
-                "src": "122:7:2"
+                "src": "122:7:1"
               },
               {
-                "id": 1169,
+                "id": 1353,
                 "name": "FRIEND",
-                "nameLocation": "131:6:2",
+                "nameLocation": "131:6:1",
                 "nodeType": "EnumValue",
-                "src": "131:6:2"
+                "src": "131:6:1"
               },
               {
-                "id": 1170,
+                "id": 1354,
                 "name": "FAMILY",
-                "nameLocation": "139:6:2",
+                "nameLocation": "139:6:1",
                 "nodeType": "EnumValue",
-                "src": "139:6:2"
+                "src": "139:6:1"
               },
               {
-                "id": 1171,
+                "id": 1355,
                 "name": "CAREGIVER",
-                "nameLocation": "147:9:2",
+                "nameLocation": "147:9:1",
                 "nodeType": "EnumValue",
-                "src": "147:9:2"
+                "src": "147:9:1"
               }
             ],
             "name": "PatientContactRelationship",
-            "nameLocation": "84:26:2",
+            "nameLocation": "84:26:1",
             "nodeType": "EnumDefinition",
-            "src": "79:78:2"
+            "src": "79:78:1"
           }
         ],
-        "scope": 1174,
-        "src": "60:1854:2",
+        "scope": 1358,
+        "src": "60:1854:1",
         "usedErrors": []
       }
     ],
-    "src": "32:1883:2"
+    "src": "32:1883:1"
   },
   "compiler": {
     "name": "solc",
@@ -197,7 +197,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-05-20T17:19:24.682Z",
+  "updatedAt": "2022-06-25T17:58:05.158Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

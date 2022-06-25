@@ -3,6 +3,7 @@ import { rejects } from "assert";
 import { resolve } from "dns";
 import { from, Observable } from "rxjs";
 import { toPractitioner } from "src/app/models/mappers/practitioner.mapper";
+import { Practitioner } from "src/app/models/practitioner.model";
 import { BlockchainService } from "src/services/blockchain.service";
 const EthCrypto = require("eth-crypto");
 
@@ -52,7 +53,7 @@ export class DoctorService {
       .catch((err: any) => {});
   }
 
-  async getDoctor(): Promise<any> {
+  async getDoctor(): Promise<Practitioner> {
     return new Promise(async (resolve, reject) => {
       console.log(await this.blockchainService.getAccount());
       console.log(await this.blockchainService.getDrContract());

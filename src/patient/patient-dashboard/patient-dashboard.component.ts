@@ -30,12 +30,12 @@ export class PatientDashboardComponent implements OnInit {
     setTimeout(async () => {
       let currentAccount = await this.blockchainService.getAccount();
       try{      
-      if(currentAccount != null && await this.blockchainService.contract.methods.isPatient(currentAccount).call()==1){
+      if(currentAccount != null && await this.blockchainService.getPatContract().methods.isPatient(currentAccount).call()==1){
         this.isPatient = true
         this.checkProgress = false
         this.progressWarn = true
-        this.progressMsg = '<span class="text-danger">Only Doctors have access to this page.... </span><br> '+
-        'Conncet Metamask to your Doctor account'
+        this.progressMsg = '<span class="text-danger">Only Patients have access to this page.... </span><br> '+
+        'Conncet Metamask to your Patient account'
       }
       else{        
         this.router.navigate(['/']);

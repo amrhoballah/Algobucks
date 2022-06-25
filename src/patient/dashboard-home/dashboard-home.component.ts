@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { toMedicalRecord } from 'src/app/models/mappers/medicalRecord.mapper';
 import { toPatient } from 'src/app/models/mappers/patient.mapper';
+import { Patient } from 'src/app/models/patient.model';
 import { PatientService } from '../services/patient.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { PatientService } from '../services/patient.service';
   styleUrls: ['./dashboard-home.component.sass'],
 })
 export class DashboardHomeComponent implements OnInit {
-  PatientDetails: any = {};
+  PatientDetails!: Patient;
   pastReports: any = [];
   practitionersKey : any = [];
   practitionersValue : any = [];
@@ -19,14 +20,13 @@ export class DashboardHomeComponent implements OnInit {
   constructor(private patientService: PatientService) {}
 
   async ngOnInit(): Promise<void> {
-    setTimeout(() => {
-      this.getPatientDetails()
-    }, 2000);
+    await this.getPatientDetails();
   }
 
   async getPatientDetails(){
     await this.patientService.getPatientDetails(await this.patientService.getAccount()).then((data:any) =>{
       this.PatientDetails = toPatient(data);
+      
       this.practitionersKey.push(this.PatientDetails.generalPractitioner);
       this.organisationsKey.push(this.PatientDetails.managingOrganisation);
 

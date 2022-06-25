@@ -32,6 +32,7 @@ export class BlockchainService {
     this.getWeb3Provider().then(async () => {
       await this.web3.eth.getAccounts(async (err: any, accs: any) => {
         this.account = accs[0];
+        console.log(this.account);
         await this.web3.eth.getBalance(this.account).then((r: any) => {
           this.balance = r;
         });
@@ -151,6 +152,19 @@ export class BlockchainService {
   async getCountsForOrg(){
     let c1 = await this.drContract.methods.getPractitionersPerOrg().call({from:this.account})
     let c2 = await this.patContract.methods.getPatientsPerOrg().call({from:this.account})
-    return [c1.length,c2.length];
+    let drCount = 0;
+    let patCount = 0;
+    for(let item of c1){
+      if(item[0] == "0x0000000000000000000000000000000000000000")
+        continue;
+      drCount++;
+    }
+
+    for(let item of c2){
+      if(item[0] == "0x0000000000000000000000000000000000000000")
+        continue;
+      patCount++;
+    }
+    return [drCount,patCount];
   }
 }

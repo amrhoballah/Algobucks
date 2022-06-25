@@ -101,7 +101,7 @@ export class ConsultationComponent implements OnInit {
     let medRec = new MedicalRecord(
       this.model.patID,
       await this.doctorService.getAccount(),
-      await this.doctorService.getAccount(),
+      (await this.doctorService.getDoctor()).memberOrgaisation,
       Date.now(),
       data.diagnosis,
       medName,

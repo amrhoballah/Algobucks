@@ -40,7 +40,9 @@ export class ViewAllPatientsComponent implements OnInit {
     this.Patients = await this.patientsService.patContract.methods.getPatientsPerDoc().call({from: this.patientsService.account}).then((res: any[]) => {
       let result = [];
       for (let i = 0; i < res.length; i++) {
-        result.push(toPatient(res[i]))
+        if(res[i][0] != '0x0000000000000000000000000000000000000000'){
+          result.push(toPatient(res[i]))
+        }
       }
       return result;
     });

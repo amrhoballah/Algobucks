@@ -35,7 +35,7 @@ export class PatientService {
 
   async getDoctor(): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.contract.methods
+      await this.blockchainService.getDrContract().methods
         .getDr(await this.blockchainService.getAccount())
         .call()
         .then((result: any) => {
@@ -53,7 +53,7 @@ export class PatientService {
   async checkIsPatient(id: string): Promise<any> {
     this.patientId = id;
     return new Promise(async (resolve, reject) => {
-      this.contract.methods
+      this.blockchainService.getPatContract().methods
         .isPatient(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -67,7 +67,7 @@ export class PatientService {
 
   async getPatientDetails(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.contract.methods
+      await this.blockchainService.getPatContract().methods
         .getPatInfo(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -81,7 +81,7 @@ export class PatientService {
 
   async getPatientRecords(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.getContract().methods
+      await this.blockchainService.getPatContract().methods
         .viewMedicalRecord()
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -95,7 +95,7 @@ export class PatientService {
 
   async getOrgName(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.getContract().methods
+      await this.blockchainService.getOrgContract().methods
         .getOrganisation(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {
@@ -109,7 +109,7 @@ export class PatientService {
 
   async getPracName(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      await this.blockchainService.getContract().methods
+      await this.blockchainService.getDrContract().methods
         .getDr(id)
         .call({ from: await this.blockchainService.getAccount() })
         .then((result: any) => {          

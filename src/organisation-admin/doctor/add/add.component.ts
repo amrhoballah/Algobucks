@@ -88,6 +88,27 @@ export class AddComponent implements OnInit {
             this.msg_text += '<br>Practitioner Added to the Blockchain';
             this.success = true
             this.model = {};
+            this.address = {
+              use: 'home',
+              street: '',
+              city: '',
+              state: '',
+              postalCode: '',
+              country: ''
+            };
+            this.telecom = {
+              phoneNumber: '',
+              email: ''
+            };
+            this.name = {
+              givenNames: '',
+              surname: ''
+            };
+            this.communication = {
+              languages: [],
+              preferred: ''
+            };
+
             return result;
           } else {
             this.warn = !this.warn;

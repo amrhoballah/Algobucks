@@ -43,7 +43,9 @@ export class ViewAllDoctorsComponent implements OnInit {
         
         let result = [];
         for (let i = 0; i < res.length; i++) {
-          result.push(toPractitioner(res[i]))
+          if(res[i][0] != '0x0000000000000000000000000000000000000000'){
+            result.push(toPractitioner(res[i]))
+          }
         }
         return result;
       });
